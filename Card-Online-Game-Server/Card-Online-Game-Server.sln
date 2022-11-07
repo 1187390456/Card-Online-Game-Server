@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Card-Online-Game-Server", "Card-Online-Game-Server.csproj", "{EBEA59E6-12BF-4454-B382-B9D0B4C9BE51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AhpilyServer", "..\AhpilyServer\AhpilyServer.csproj", "{74D6644B-53A4-4774-996E-F97CD0199570}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBEA59E6-12BF-4454-B382-B9D0B4C9BE51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBEA59E6-12BF-4454-B382-B9D0B4C9BE51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBEA59E6-12BF-4454-B382-B9D0B4C9BE51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBEA59E6-12BF-4454-B382-B9D0B4C9BE51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74D6644B-53A4-4774-996E-F97CD0199570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74D6644B-53A4-4774-996E-F97CD0199570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74D6644B-53A4-4774-996E-F97CD0199570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74D6644B-53A4-4774-996E-F97CD0199570}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93E460A1-5B87-4F6F-9D3E-ECE1B29A5A3A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "ebea59e6-12bf-4454-b382-b9d0b4c9be51": {
+      "ProjectGuid": "ebea59e6-12bf-4454-b382-b9d0b4c9be51",
+      "DisplayName": "Card-Online-Game-Server",
+      "ColorIndex": 0
+    },
+    "34cc2d80-660e-4257-8c8a-136ab4896df2": {
+      "ProjectGuid": "34cc2d80-660e-4257-8c8a-136ab4896df2",
+      "DisplayName": "AhpilyServer",
+      "ColorIndex": 1
+    },
+    "74d6644b-53a4-4774-996e-f97cd0199570": {
+      "ProjectGuid": "74d6644b-53a4-4774-996e-f97cd0199570",
+      "DisplayName": "AhpilyServer",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}

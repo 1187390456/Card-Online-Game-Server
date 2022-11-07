@@ -1,0 +1,11 @@
+D:\Card-Online-Game-Server\Card-Online-Game-Server\bin\Debug\Card-Online-Game-Server.exe.config
+D:\Card-Online-Game-Server\Card-Online-Game-Server\bin\Debug\Card-Online-Game-Server.exe
+D:\Card-Online-Game-Server\Card-Online-Game-Server\bin\Debug\Card-Online-Game-Server.pdb
+D:\Card-Online-Game-Server\Card-Online-Game-Server\bin\Debug\AhpilyServer.dll
+D:\Card-Online-Game-Server\Card-Online-Game-Server\bin\Debug\AhpilyServer.pdb
+D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.csproj.AssemblyReference.cache
+D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.csproj.SuggestedBindingRedirects.cache
+D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.csproj.CoreCompileInputs.cache
+D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.csproj.CopyComplete
+D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.exe
+D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.pdb
