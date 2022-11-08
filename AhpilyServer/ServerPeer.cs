@@ -47,7 +47,8 @@ namespace AhpilyServer
                 {
                     clientPeer = new ClientPeer();
                     clientPeer.receiveArgs.Completed += Receive_Completed; // 绑定异步接收事件完成回调
-                    clientPeer.receiveArgs.UserToken = clientPeer; // 将自身存储在userToken字段
+                    clientPeer.receiveCompleted = Receive_Completed; // 一条解析数据完成回调
+                    clientPeer.sendDisconnect = Disconnect;
                     clientPeerPool.Enqueue(clientPeer);
                 }
 
@@ -75,8 +76,7 @@ namespace AhpilyServer
                 e = new SocketAsyncEventArgs();
                 e.Completed += Accept_Completed; // 异步事件 执行完毕 会执行当前委托
             }
-            // 限制线程的访问
-            acceptSemaphore.WaitOne();// 每连接一个 进行计数
+
             var res = serverSocket.AcceptAsync(e); // 判断是否执行完毕 true 正在执行 false 执行完毕
             if (!res) ProcessAccept(e); // 执行完毕则直接调用
         }
@@ -87,6 +87,9 @@ namespace AhpilyServer
         /// <param name="e">异步回调事件</param>
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
+            // 限制线程的访问
+            acceptSemaphore.WaitOne();// 每连接一个 进行计数
+
             ClientPeer client = clientPeerPool.Dequeue();
             client.clientSocket = e.AcceptSocket;
 
@@ -151,10 +154,12 @@ namespace AhpilyServer
                 if (client.receiveArgs.SocketError == SocketError.Success)
                 {
                     // 客户端主动断开连接
+                    Disconnect(client, "客户端主动断开连接");
                 }
                 else
                 {
-                    // 异常断开
+                    // 异常断开 网络异常等
+                    Disconnect(client, client.receiveArgs.SocketError.ToString());
                 }
             }
         }
@@ -166,6 +171,44 @@ namespace AhpilyServer
         /// <param name="e"></param>
         private void Receive_Completed(object sender, SocketAsyncEventArgs e) => ProcessReceive(e);
 
+        /// <summary>
+        /// 一条解析数据 完成回调
+        /// </summary>
+        /// <param name="client">连接对象</param>
+        /// <param name="msg">解析出来的数据</param>
+        private void Receive_Completed(ClientPeer client, SocketMsg msg)
+        {
+            // 应用层使用
+        }
+
         #endregion 接收数据
+
+        #region 断开连接
+
+        /// <summary>
+        /// 断开连接
+        /// </summary>
+        /// <param name="client">断开的连接对象</param>
+        /// <param name="reason">断开的原因</param>
+        public void Disconnect(ClientPeer client, string reason)
+        {
+            try
+            {
+                if ((client == null)) throw new Exception("当前指定的客户端连接对象为空 无法断开连接");
+
+                // 通知应用层 客户端断开连接了
+                client.Disconnect();
+
+                clientPeerPool.Enqueue(client); // 入池 回收对象 方便下次使用
+
+                acceptSemaphore.Release(); // 连接的逆过程 释放限制
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        #endregion 断开连接
     }
 }
