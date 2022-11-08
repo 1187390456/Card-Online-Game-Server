@@ -20,7 +20,7 @@ namespace AhpilyServer
         /// </summary>
         /// <param name="data">需要发送的数据 字节数组</param>
         /// <returns></returns>
-        public static byte[] EncodeMessage(byte[] data)
+        public static byte[] EncodePacket(byte[] data)
         {
             // using关键字 执行后自动释放资源
             using (MemoryStream ms = new MemoryStream()) // 初始化内存流对象
@@ -44,7 +44,7 @@ namespace AhpilyServer
         /// </summary>
         /// <param name="dataCache">数据缓存列表</param>
         /// <returns></returns>
-        public static byte[] DecodeMessage(ref List<byte> dataCache) // ref 作用 在方法里修改会同步到外部的值
+        public static byte[] DecodePacket(ref List<byte> dataCache) // ref 作用 在方法里修改会同步到外部的值
         {
             // 4字节 构成一个int长度 小于4 不能构成一个完整的消息
             if (dataCache.Count < 4) return null;

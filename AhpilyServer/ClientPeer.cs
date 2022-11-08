@@ -54,7 +54,7 @@ namespace AhpilyServer
         {
             isReceiveProcess = true;
 
-            byte[] data = EncodeTool.DecodeMessage(ref dataCache); // 解析数据包
+            byte[] data = EncodeTool.DecodePacket(ref dataCache); // 解析数据包
             // 未解析成功
             if (data == null)
             {
@@ -114,7 +114,7 @@ namespace AhpilyServer
         {
             SocketMsg msg = new SocketMsg(opCode, subCode, value); // 构造发送消息类
             byte[] data = EncodeTool.EncodeMsg(msg); // 将消息类转成 字节数组
-            byte[] packet = EncodeTool.EncodeMessage(data); // 将字节数组 转成指定的 数据包字节数组
+            byte[] packet = EncodeTool.EncodePacket(data); // 将字节数组 转成指定的 数据包字节数组
 
             // 存入消息队列
             sendQueue.Enqueue(packet);
