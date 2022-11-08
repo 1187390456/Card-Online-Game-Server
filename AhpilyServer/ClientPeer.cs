@@ -12,23 +12,21 @@ namespace AhpilyServer
     /// </summary>
     public class ClientPeer
     {
-        private Socket clientSocket;
-
-        /// <summary>
-        /// 设置连接对象
-        /// </summary>
-        /// <param name="socket"></param>
-        public void SetSocket(Socket clientSocket)
-        {
-            this.clientSocket = clientSocket;
-        }
+        public Socket clientSocket { get; set; }
 
         #region 接收数据
 
+        private List<byte> dataCache = new List<byte>(); // 一旦接收到数据 存储到缓存区里面
+
+        public SocketAsyncEventArgs receiveArgs;
+
         /// <summary>
-        /// 一旦接收到数据 存储到缓存区里面
+        /// 自身处理数据包
         /// </summary>
-        private List<byte> dataCache = new List<byte>();
+        /// <param name="packet"></param>
+        public void StartReceive(byte[] packet)
+        {
+        }
 
         #endregion 接收数据
     }

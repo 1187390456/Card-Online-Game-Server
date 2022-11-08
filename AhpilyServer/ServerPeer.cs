@@ -46,6 +46,8 @@ namespace AhpilyServer
                 for (int i = 0; i < maxCount; i++)
                 {
                     clientPeer = new ClientPeer();
+                    clientPeer.receiveArgs.Completed += Receive_Completed; // 绑定异步接收事件完成回调
+                    clientPeer.receiveArgs.UserToken = clientPeer; // 将自身存储在userToken字段
                     clientPeerPool.Enqueue(clientPeer);
                 }
 
@@ -80,29 +82,90 @@ namespace AhpilyServer
         }
 
         /// <summary>
-        /// 接受请求异步事件完成时触发委托
-        /// </summary>
-        /// <param name="sender">委托对象</param>
-        /// <param name="e">异步回调事件</param>
-        private void Accept_Completed(object sender, SocketAsyncEventArgs e)
-        {
-            // 未执行完毕 等待委托 进行完毕进行执行
-            ProcessAccept(e);
-        }
-
-        /// <summary>
         /// 处理连接请求
         /// </summary>
         /// <param name="e">异步回调事件</param>
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
             ClientPeer client = clientPeerPool.Dequeue();
-            client.SetSocket(e.AcceptSocket);
+            client.clientSocket = e.AcceptSocket;
+
+            // 开始接收数据
+            StartReceive(client);
 
             e.AcceptSocket = null;
             StartAccept(e);
         }
 
+        /// <summary>
+        /// 接受请求异步事件完成时触发委托
+        /// </summary>
+        /// <param name="sender">委托对象</param>
+        /// <param name="e">异步回调事件</param>
+        private void Accept_Completed(object sender, SocketAsyncEventArgs e) => ProcessAccept(e);
+
         #endregion 接收客户端的连接
+
+        #region 接收数据
+
+        /// <summary>
+        /// 开始接收数据
+        /// </summary>
+        /// <param name="client"></param>
+        private void StartReceive(ClientPeer client)
+        {
+            try
+            {
+                var res = client.clientSocket.ReceiveAsync(client.receiveArgs);
+                if (!res) ProcessReceive(client.receiveArgs);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 处理接收的请求
+        /// </summary>
+        /// <param name="e"></param>
+        private void ProcessReceive(SocketAsyncEventArgs e)
+        {
+            ClientPeer client = e.UserToken as ClientPeer; // 通过存储在自身的userToken 拿到自身客户端
+
+            // 判断网络消息是否接收成功 确保成功 且 传输字节数有值(长度大于0)
+            if (client.receiveArgs.SocketError == SocketError.Success && client.receiveArgs.BytesTransferred > 0)
+            {
+                // 拷贝当前客户端字节数据 即数据包
+                byte[] packet = new byte[client.receiveArgs.BytesTransferred];
+                Buffer.BlockCopy(client.receiveArgs.Buffer, 0, packet, 0, client.receiveArgs.BytesTransferred);
+
+                // 让客户端自身处理数据包 自身解析
+                client.StartReceive(packet);
+
+                StartReceive(client); // 尾递归 闭环
+            }
+            // 没有传输的字节数 代表断开连接了
+            else if (client.receiveArgs.BytesTransferred == 0)
+            {
+                if (client.receiveArgs.SocketError == SocketError.Success)
+                {
+                    // 客户端主动断开连接
+                }
+                else
+                {
+                    // 异常断开
+                }
+            }
+        }
+
+        /// <summary>
+        /// 接收完成时 触发的事件回调
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Receive_Completed(object sender, SocketAsyncEventArgs e) => ProcessReceive(e);
+
+        #endregion 接收数据
     }
 }
