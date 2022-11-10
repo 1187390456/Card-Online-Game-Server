@@ -20,6 +20,7 @@ namespace AhpilyServer
             {
                 UserToken = this // 将自身存储在userToken字段
             }; // 接收异步套接字
+            receiveArgs.SetBuffer(new byte[1024], 0, 1024); // 接收数据缓存区
             sendArgs = new SocketAsyncEventArgs(); // 发送异步套接字
             sendArgs.Completed += SendArgs_Completed;
             sendQueue = new Queue<byte[]>(); // 消息队列
@@ -87,10 +88,10 @@ namespace AhpilyServer
             isSendProcess = false;
 
             clientSocket.Shutdown(SocketShutdown.Both);  // 断开 发送/接受 消息 both都断开
+            clientSocket.Disconnect(true);
+
             clientSocket.Close(); // 释放资源
             clientSocket = null;
-
-            clientSocket.Disconnect(true);
         }
 
         #endregion 断开连接

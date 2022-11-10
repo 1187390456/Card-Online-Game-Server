@@ -9,3 +9,5 @@ D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Se
 D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.csproj.CopyComplete
 D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.exe
 D:\Card-Online-Game-Server\Card-Online-Game-Server\obj\Debug\Card-Online-Game-Server.pdb
+D:\Card-Online-Game-Server\Card-Online-Game-Server\bin\Debug\Protocol.dll
+D:\Card-Online-Game-Server\Card-Online-Game-Server\bin\Debug\Protocol.pdb

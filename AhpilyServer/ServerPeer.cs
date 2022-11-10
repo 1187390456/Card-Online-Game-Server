@@ -107,6 +107,8 @@ namespace AhpilyServer
             ClientPeer client = clientPeerPool.Dequeue();
             client.clientSocket = e.AcceptSocket;
 
+            Console.WriteLine("客户端连接成功 !" + client.clientSocket.RemoteEndPoint.ToString());
+
             // 开始接收数据
             StartReceive(client);
 
@@ -211,6 +213,7 @@ namespace AhpilyServer
             {
                 if ((client == null)) throw new Exception("当前指定的客户端连接对象为空 无法断开连接");
 
+                Console.WriteLine(client.clientSocket.RemoteEndPoint.ToString() + "客户端断开连接 原因:" + reason);
                 // 通知应用层 客户端断开连接了
                 application.OnDisconnect(client);
 

@@ -12,6 +12,7 @@ namespace Card_Online_Game_Server
         private static void Main(string[] args)
         {
             ServerPeer serverPeer = new ServerPeer();
+            serverPeer.SetApplication(new NetMsgCenter());
             serverPeer.Start(6666, 10);
             Console.Read();
         }

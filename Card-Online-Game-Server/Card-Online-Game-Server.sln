@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Card-Online-Game-Server", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AhpilyServer", "..\AhpilyServer\AhpilyServer.csproj", "{74D6644B-53A4-4774-996E-F97CD0199570}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protocol", "..\Protocol\Protocol.csproj", "{92D8D420-C4A1-4BBF-BF86-C5001DCA1C6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{74D6644B-53A4-4774-996E-F97CD0199570}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74D6644B-53A4-4774-996E-F97CD0199570}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74D6644B-53A4-4774-996E-F97CD0199570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92D8D420-C4A1-4BBF-BF86-C5001DCA1C6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92D8D420-C4A1-4BBF-BF86-C5001DCA1C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92D8D420-C4A1-4BBF-BF86-C5001DCA1C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92D8D420-C4A1-4BBF-BF86-C5001DCA1C6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
