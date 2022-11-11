@@ -4,3 +4,5 @@ D:\Card-Online-Game-Server\Protocol\obj\Debug\Protocol.csproj.AssemblyReference.
 D:\Card-Online-Game-Server\Protocol\obj\Debug\Protocol.csproj.CoreCompileInputs.cache
 D:\Card-Online-Game-Server\Protocol\obj\Debug\Protocol.dll
 D:\Card-Online-Game-Server\Protocol\obj\Debug\Protocol.pdb
+D:\Card-Online-Game\Assets\Plugins\Protocol.dll
+D:\Card-Online-Game\Assets\Plugins\Protocol.pdb

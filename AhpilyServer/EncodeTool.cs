@@ -112,8 +112,8 @@ namespace AhpilyServer
             MemoryStream ms = new MemoryStream(data);
             BinaryReader br = new BinaryReader(ms);
             SocketMsg msg = new SocketMsg();
-            msg.OpCode = br.ReadByte();
-            msg.SubCode = br.ReadByte();
+            msg.OpCode = br.ReadInt32();
+            msg.SubCode = br.ReadInt32();
 
             // 还有剩余字节未读取 代表value有值
             if (ms.Length > ms.Position)
