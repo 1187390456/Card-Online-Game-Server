@@ -1,5 +1,6 @@
 ﻿using AhpilyServer;
 using Card_Online_Game_Server.Cache;
+using Card_Online_Game_Server.Model;
 using Protocol.Code;
 using Protocol.Dto;
 using System;
@@ -60,21 +61,23 @@ namespace Card_Online_Game_Server.Logic
             {
                 if (accountCache.IsExit(account))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, "账号已存在!");
+                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, -1);
                     return;
                 }
                 if (string.IsNullOrEmpty(account) || account.Length < 4 || account.Length > 16)
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, "账号不合法!");
+                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, -2);
                     return;
                 }
                 if (string.IsNullOrEmpty(password) || password.Length < 4 || password.Length > 16)
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, "密码不合法!");
+                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, -3);
                     return;
                 }
                 accountCache.Create(account, password); // 注册账号
-                clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, "注册成功!");
+                Console.Clear();
+                LogAllAccount();
+                clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, 0);
             });
         }
 
@@ -85,22 +88,35 @@ namespace Card_Online_Game_Server.Logic
             {
                 if (!accountCache.IsExit(account))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, "账号不存在!");
+                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, -1);
                     return;
                 }
-                if (accountCache.IsOnline(clientPeer))
+                if (accountCache.IsOnline(account))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, "账号已登录!");
+                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, -2);
                     return;
                 }
                 if (!accountCache.IsMatch(account, password))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, "密码错误!");
+                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, -3);
                     return;
                 }
                 accountCache.Online(clientPeer, account); // 上线账号
-                clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, "登录成功!");
+                Console.Clear();
+                LogAllAccount();
+                clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, 0);
             });
+        }
+
+        /// <summary>
+        /// 打印账号信息
+        /// </summary>
+        public void LogAllAccount()
+        {
+            foreach (var item in accountCache.accModelDic)
+            {
+                Console.WriteLine("账号 : {0}  密码 : {1}", item.Key, item.Value.Password);
+            }
         }
     }
 }

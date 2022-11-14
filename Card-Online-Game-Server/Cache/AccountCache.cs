@@ -16,7 +16,7 @@ namespace Card_Online_Game_Server.Cache
     {
         #region 账号相关
 
-        private Dictionary<string, AccountModel> accModelDic = new Dictionary<string, AccountModel>();  // 账号 账号模型 字典
+        public Dictionary<string, AccountModel> accModelDic = new Dictionary<string, AccountModel>();  // 账号 账号模型 字典
 
         private ConcurrentInt id = new ConcurrentInt(-1); // 线程安全的id 后期数据库处理
 
@@ -41,12 +41,14 @@ namespace Card_Online_Game_Server.Cache
 
         #region 上线相关
 
-        private Dictionary<string, ClientPeer> accClientDic = new Dictionary<string, ClientPeer>(); // 账号 账号关联的客户端 字典
-        private Dictionary<ClientPeer, string> clientAccDic = new Dictionary<ClientPeer, string>(); // 账号关联的客户端 账号 字典
+        public Dictionary<string, ClientPeer> accClientDic = new Dictionary<string, ClientPeer>(); // 账号 账号关联的客户端 字典
+        public Dictionary<ClientPeer, string> clientAccDic = new Dictionary<ClientPeer, string>(); // 账号关联的客户端 账号 字典
 
         public bool IsOnline(string account) => accClientDic.ContainsKey(account); // 根据账号判断是否在线
 
         public bool IsOnline(ClientPeer clientPeer) => clientAccDic.ContainsKey(clientPeer);  // 根据客户端判断是否在线
+
+        public string GetAccountByClient(ClientPeer clientPeer) => clientAccDic[clientPeer]; // 根据客户端找账号
 
         /// <summary>
         ///  获取当前连接客户端id 即上线玩家id
@@ -67,7 +69,11 @@ namespace Card_Online_Game_Server.Cache
         public void Online(ClientPeer clientPeer, string account)
         {
             accClientDic.Add(account, clientPeer);
-            clientAccDic.Add(clientPeer, account);
+
+            if (!IsOnline(clientPeer)) // 一个客户端对应多个账号
+            {
+                clientAccDic.Add(clientPeer, account);
+            }
         }
 
         /// <summary>
