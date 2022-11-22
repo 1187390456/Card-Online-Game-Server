@@ -12,10 +12,12 @@ namespace Card_Online_Game_Server.Cache
     public class Caches
     {
         public static AccountCache AccountCache { get; set; }
+        public static UserCache UserCache { get; set; }
 
         static Caches()
         {
             AccountCache = new AccountCache();
+            UserCache = new UserCache();
         }
     }
 }

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\SubCode\UserCode.cs" />
     <Compile Include="Dto\AccountDto.cs" />
     <Compile Include="Code\SubCode\AccountCode.cs" />
     <Compile Include="Code\OpCode.cs" />
