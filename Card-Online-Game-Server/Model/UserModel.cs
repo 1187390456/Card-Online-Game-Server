@@ -26,6 +26,7 @@ namespace Card_Online_Game_Server.Model
         {
             AccountId = accountId;
             Id = id;
+
             Name = name;
 
             // 初始默认值

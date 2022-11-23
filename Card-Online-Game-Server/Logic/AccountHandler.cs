@@ -13,10 +13,12 @@ namespace Card_Online_Game_Server.Logic
     public class AccountHandler : IHandler
     {
         private AccountCache accountCache = Caches.AccountCache;
+        private UserCache userCache = Caches.UserCache;
 
         public void OnDisconnect(ClientPeer client)
         {
-            if (accountCache.IsOnline(client)) accountCache.Offline(client); // 下线
+            if (accountCache.IsOnline(client)) accountCache.Offline(client);
+            if (userCache.IsOnline(client)) userCache.Offline(client);
         }
 
         /// <summary>
@@ -104,7 +106,15 @@ namespace Card_Online_Game_Server.Logic
                 accountCache.Online(clientPeer, account); // 上线账号
                 Console.Clear();
                 LogAllAccount();
-                clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, 0);
+
+                if (userCache.IsExit(accountCache.GetId(clientPeer)))
+                {
+                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, 1);   // 存在角色
+                }
+                else
+                {
+                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, 0);   // 不存在角色
+                }
             });
         }
 

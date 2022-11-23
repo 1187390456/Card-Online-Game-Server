@@ -2,6 +2,7 @@
 using Card_Online_Game_Server.Cache;
 using Protocol.Code;
 using Protocol.Code.SubCode;
+using Protocol.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace Card_Online_Game_Server.Logic
         public void OnDisconnect(ClientPeer client)
         {
             if (userCache.IsOnline(client)) userCache.Offline(client);
+            if (accountCache.IsOnline(client)) accountCache.Offline(client);
         }
 
         public void OnReceive(ClientPeer client, int subCode, object value)
@@ -66,8 +68,10 @@ namespace Card_Online_Game_Server.Logic
                 }
 
                 userCache.Create(name, accountId); // 创建角色
-
                 clientPeer.Send(OpCode.User, UserCode.Create_Sres, 0); // 创建成功
+
+                // 获取角色信息 并上线
+                GetUserInfo(clientPeer);
             });
         }
 
@@ -79,20 +83,29 @@ namespace Card_Online_Game_Server.Logic
         {
             SingleExecute.Instance.Execute(() =>
             {
-                if (!accountCache.IsOnline(clientPeer))
-                {
-                    clientPeer.Send(OpCode.User, UserCode.Get_Sres, -1); // 非法登录
-                    return;
-                }
+                if (!accountCache.IsOnline(clientPeer)) return; // 非法登录
                 var accountId = accountCache.GetId(clientPeer);
                 if (!userCache.IsExit(accountId))
                 {
-                    clientPeer.Send(OpCode.User, UserCode.Get_Sres, -2); // 不存在角色
+                    clientPeer.Send(OpCode.User, UserCode.Get_Sres, null); // 不存在角色
                     return;
                 }
-                // TODO 有问题
-                var userModel = userCache.GetUserModelByAccountId(accountId);
-                clientPeer.Send(OpCode.User, UserCode.Get_Sres, userModel); // 获取角色成功
+                // 发送角色信息
+                var userModel = userCache.GetUserModelByAccountId(accountId);  // 获取用户模型
+                UserDto userDto = new UserDto
+                {
+                    Avatar = userModel.Avatar,
+                    AvatarMask = userModel.AvatarMask,
+                    RankLogo = userModel.RankLogo,
+                    RankName = userModel.RankName,
+                    GradeLogo = userModel.GradeLogo,
+                    GradeName = userModel.GradeName,
+                    Name = userModel.Name,
+                }; // 用户传输模型
+                clientPeer.Send(OpCode.User, UserCode.Get_Sres, userDto); // 获取角色成功
+
+                // 上线角色
+                Online(clientPeer);
             });
         }
 
@@ -117,6 +130,11 @@ namespace Card_Online_Game_Server.Logic
                     return;
                 }
                 var userId = userCache.GetIdByAccountId(accountId);
+                if (userCache.IsOnline(clientPeer))
+                {
+                    clientPeer.Send(OpCode.User, UserCode.Onine_Sres, -3); // 角色已上线
+                    return;
+                }
                 userCache.Online(clientPeer, userId);
                 clientPeer.Send(OpCode.User, UserCode.Onine_Sres, 0); // 上线成功
             });

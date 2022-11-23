@@ -15,10 +15,12 @@ namespace Card_Online_Game_Server
     public class NetMsgCenter : IApplication
     {
         private IHandler account = new AccountHandler();
+        private IHandler user = new UserHandler();
 
         public void OnDisconnect(ClientPeer client)
         {
             account.OnDisconnect(client);
+            user.OnDisconnect(client);
         }
 
         public void OnReceive(ClientPeer client, SocketMsg msg)
@@ -27,6 +29,10 @@ namespace Card_Online_Game_Server
             {
                 case OpCode.ACCOUNT:
                     account.OnReceive(client, msg.SubCode, msg.Value);
+                    break;
+
+                case OpCode.User:
+                    user.OnReceive(client, msg.SubCode, msg.Value);
                     break;
 
                 default:

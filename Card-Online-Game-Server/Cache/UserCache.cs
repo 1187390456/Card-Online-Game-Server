@@ -48,8 +48,8 @@ namespace Card_Online_Game_Server.Cache
 
         public void Offline(ClientPeer clientPeer) // 下线
         {
-            clientIdDic.Remove(clientPeer);
             idClientDic.Remove(clientIdDic[clientPeer]);
+            clientIdDic.Remove(clientPeer);
         }
 
         public UserModel GetUserModelByClient(ClientPeer clientPeer) => userModelDic[clientIdDic[clientPeer]];// 根据连接对象获取角色模型
