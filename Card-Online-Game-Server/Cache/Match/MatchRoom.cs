@@ -37,7 +37,7 @@ namespace Card_Online_Game_Server.Cache.Match
             UserReadyList.Clear();
         }
 
-        public void Borcast(int opCode, int subCode, object value) // 广播当前房间其他玩家
+        public void Borcast(int opCode, int subCode, object value, ClientPeer currentClient = null) // 广播当前房间其他玩家 默认自身客户端不发
         {
             SocketMsg msg = new SocketMsg(opCode, subCode, value); // 构造发送消息类
             byte[] data = EncodeTool.EncodeMsg(msg); // 将消息类转成 字节数组
@@ -45,6 +45,7 @@ namespace Card_Online_Game_Server.Cache.Match
 
             foreach (var client in UserClientDic.Values)
             {
+                if (currentClient == client) continue;
                 client.Send(packet);
             }
         }

@@ -19,8 +19,8 @@ namespace Protocol.Code.SubCode
 
         // 离开匹配
 
-        public const int Exit_Cres = 3;
-        public const int Exit_Bro = 4;
+        public const int Leave_Cres = 3;
+        public const int Leave_Bro = 4;
 
         // 准备
 
