@@ -33,7 +33,12 @@ namespace Card_Online_Game_Server.Cache
         /// <param name="password"></param>
         public void Create(string account, string password)
         {
-            AccountModel accountModel = new AccountModel(id.Add_Get(), account, password);
+            AccountModel accountModel = new AccountModel
+            {
+                Id = id.Add_Get(),
+                Account = account,
+                Password = password
+            };
             accModelDic.Add(account, accountModel); // 存储账号
         }
 
