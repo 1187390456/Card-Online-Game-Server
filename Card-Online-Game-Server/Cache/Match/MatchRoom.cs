@@ -12,18 +12,11 @@ namespace Card_Online_Game_Server.Cache.Match
     /// </summary>
     public class MatchRoom
     {
-        public int Id { get; private set; } // 房间id
+        public int Id;// 房间id
 
-        public List<UserModel> UserList { get; private set; }// 当前房间人员列表
+        public List<UserModel> UserList;// 当前房间人员列表
 
-        public List<UserModel> UserReadyList { get; private set; }// 当前房间已准备人员列表
-
-        public MatchRoom(int id)
-        {
-            Id = id;
-            UserList = new List<UserModel>();
-            UserReadyList = new List<UserModel>();
-        }
+        public List<UserModel> UserReadyList;// 当前房间已准备人员列表
 
         public bool IsFull() => UserList.Count >= 3; // 房间是否满了
 

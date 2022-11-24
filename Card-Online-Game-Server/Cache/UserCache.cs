@@ -11,9 +11,9 @@ namespace Card_Online_Game_Server.Cache
 {
     public class UserCache
     {
-        public Dictionary<int, UserModel> userModelDic = new Dictionary<int, UserModel>(); // 角色id 对应 角色模型
-
         public Dictionary<int, int> accUidDic = new Dictionary<int, int>(); // 账号id 对应 角色id
+
+        public Dictionary<int, UserModel> userModelDic = new Dictionary<int, UserModel>(); // 角色id 对应 角色模型
 
         public ConcurrentInt id = new ConcurrentInt(-1); //角色id
 
