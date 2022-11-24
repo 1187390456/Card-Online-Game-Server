@@ -77,6 +77,7 @@ namespace Card_Online_Game_Server.Logic
                     return;
                 }
                 accountCache.Create(account, password); // 注册账号
+
                 Console.Clear();
                 LogAllAccount();
                 clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, 0);
@@ -104,6 +105,7 @@ namespace Card_Online_Game_Server.Logic
                     return;
                 }
                 accountCache.Online(clientPeer, account); // 上线账号
+
                 Console.Clear();
                 LogAllAccount();
 

@@ -69,9 +69,6 @@ namespace Card_Online_Game_Server.Logic
 
                 userCache.Create(name, accountId); // 创建角色
                 clientPeer.Send(OpCode.User, UserCode.Create_Sres, 0); // 创建成功
-
-                // 获取角色信息 并上线
-                GetUserInfo(clientPeer);
             });
         }
 
@@ -104,8 +101,7 @@ namespace Card_Online_Game_Server.Logic
                 }; // 用户传输模型
                 clientPeer.Send(OpCode.User, UserCode.Get_Sres, userDto); // 获取角色成功
 
-                // 上线角色
-                Online(clientPeer);
+                if (!userCache.IsOnline(clientPeer)) Online(clientPeer); // 不在线则上线
             });
         }
 
