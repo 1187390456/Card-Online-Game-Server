@@ -118,9 +118,17 @@ namespace AhpilyServer
             byte[] data = EncodeTool.EncodeMsg(msg); // 将消息类转成 字节数组
             byte[] packet = EncodeTool.EncodePacket(data); // 将字节数组 转成指定的 数据包字节数组
 
+            Send(packet);
+        }
+
+        /// <summary>
+        /// 直接发送数据包
+        /// </summary>
+        /// <param name="packet"></param>
+        public void Send(byte[] packet)
+        {
             // 存入消息队列
             sendQueue.Enqueue(packet);
-
             if (!isSendProcess) StartSend(); // 不在发送处理中 执行发送处理
         }
 

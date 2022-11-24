@@ -39,9 +39,13 @@ namespace Card_Online_Game_Server.Cache.Match
 
         public void Borcast(int opCode, int subCode, object value) // 广播当前房间其他玩家
         {
+            SocketMsg msg = new SocketMsg(opCode, subCode, value); // 构造发送消息类
+            byte[] data = EncodeTool.EncodeMsg(msg); // 将消息类转成 字节数组
+            byte[] packet = EncodeTool.EncodePacket(data); // 将字节数组 转成指定的 数据包字节数组
+
             foreach (var client in UserClientDic.Values)
             {
-                client.Send(opCode, subCode, value);
+                client.Send(packet);
             }
         }
     }
