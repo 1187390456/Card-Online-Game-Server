@@ -11,9 +11,9 @@ namespace Card_Online_Game_Server.Model
     /// </summary>
     public class AccountModel
     {
-        public int Id;
-        public string Account;
-        public string Password;
+        public int Id; // 账号id
+        public string Account; // 账号
+        public string Password; // 密码
 
         public AccountModel(int id, string account, string password)
         {

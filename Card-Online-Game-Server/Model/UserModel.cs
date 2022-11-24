@@ -11,22 +11,20 @@ namespace Card_Online_Game_Server.Model
     /// </summary>
     public class UserModel
     {
-        public int AccountId; // 关联的账号id
-        public int Id; // 标识id
-
-        public string Avatar;
-        public string AvatarMask;
-        public string Name;
-        public string RankLogo;
-        public string RankName;
-        public string GradeLogo;
-        public string GradeName;
+        public int AccountId; // 账号id
+        public int Id; // 角色id
+        public string Avatar; // 头像地址
+        public string AvatarMask; // 头像框地址
+        public string Name; // 名称
+        public string RankLogo; // 排位图标地址
+        public string RankName; // 排位等级名称
+        public string GradeLogo;// 等级图标地址
+        public string GradeName; // 等级名称
 
         public UserModel(int accountId, int id, string name)
         {
             AccountId = accountId;
             Id = id;
-
             Name = name;
 
             // 初始默认值
