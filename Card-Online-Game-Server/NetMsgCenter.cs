@@ -16,6 +16,7 @@ namespace Card_Online_Game_Server
     {
         private IHandler account = new AccountHandler();
         private IHandler user = new UserHandler();
+        private IHandler match = new MatchHandler();
 
         public void OnDisconnect(ClientPeer client)
         {
@@ -33,6 +34,10 @@ namespace Card_Online_Game_Server
 
                 case OpCode.User:
                     user.OnReceive(client, msg.SubCode, msg.Value);
+                    break;
+
+                case OpCode.Match:
+                    match.OnReceive(client, msg.SubCode, msg.Value);
                     break;
 
                 default:

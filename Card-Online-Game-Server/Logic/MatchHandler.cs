@@ -83,8 +83,12 @@ namespace Card_Online_Game_Server.Logic
 
                 if (!matchCache.IsUserHaveRoom(userModel)) return; // 当前用户不在房间
 
-                MatchRoom matchRoom = matchCache.Leave(userModel); // 离开房间
-                matchRoom.Borcast(OpCode.Match, MatchCode.Leave_Bro, userModel.Id); // 离开 广播给所有人
+                MatchRoom matchRoom = matchCache.GetUserRoom(userModel);
+
+                // 离开 广播给所有人 要先广播给所有人再离开 要不然自己收不到  这里先做测试
+                matchRoom.Borcast(OpCode.Match, MatchCode.Leave_Bro, userModel.Id);
+
+                matchCache.Leave(userModel); // 离开房间
             });
         }
 
@@ -104,6 +108,8 @@ namespace Card_Online_Game_Server.Logic
 
                 MatchRoom matchRoom = matchCache.GetUserRoom(userModel); // 获取房间
                 matchRoom.Ready(userModel); // 准备
+
+                matchRoom.Borcast(OpCode.Match, MatchCode.Ready_Bro, userModel.Id, clientPeer); // 广播给其他用户
 
                 if (matchRoom.IsAllReady()) // 所有玩家准备
                 {

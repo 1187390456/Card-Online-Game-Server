@@ -43,6 +43,8 @@ namespace Card_Online_Game_Server.Cache.Match
             byte[] data = EncodeTool.EncodeMsg(msg); // 将消息类转成 字节数组
             byte[] packet = EncodeTool.EncodePacket(data); // 将字节数组 转成指定的 数据包字节数组
 
+            Console.WriteLine("当前房间人数" + UserClientDic.Count);
+
             foreach (var client in UserClientDic.Values)
             {
                 if (currentClient == client) continue;
