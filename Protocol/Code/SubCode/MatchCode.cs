@@ -15,19 +15,20 @@ namespace Protocol.Code.SubCode
 
         public const int Enter_Cres = 0;
         public const int Enter_Sres = 1;
+        public const int Enter_Bro = 2;
 
         // 离开匹配
 
-        public const int Exit_Cres = 2;
-        public const int Exit_Bro = 3;
+        public const int Exit_Cres = 3;
+        public const int Exit_Bro = 4;
 
         // 准备
 
-        public const int Ready_Cres = 4;
-        public const int Ready_Bro = 5;
+        public const int Ready_Cres = 5;
+        public const int Ready_Bro = 6;
 
         // 开始游戏
 
-        public const int Start_Bro = 6;
+        public const int Start_Bro = 7;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Card_Online_Game_Server.Cache.Match;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +14,13 @@ namespace Card_Online_Game_Server.Cache
     {
         public static AccountCache AccountCache { get; set; }
         public static UserCache UserCache { get; set; }
+        public static MatchCache MatchCache { get; set; }
 
         static Caches()
         {
             AccountCache = new AccountCache();
             UserCache = new UserCache();
+            MatchCache = new MatchCache();
         }
     }
 }
