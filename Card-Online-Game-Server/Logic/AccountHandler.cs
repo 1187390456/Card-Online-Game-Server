@@ -38,7 +38,7 @@ namespace Card_Online_Game_Server.Logic
                     }
                     break;
 
-                case AccountCode.LOGIN:
+                case AccountCode.Login:
                     {
                         AccountDto accountDto = value as AccountDto;
                         Login(client, accountDto.Account, accountDto.Password);
@@ -63,24 +63,24 @@ namespace Card_Online_Game_Server.Logic
             {
                 if (accountCache.IsExit(account))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, -1);
+                    clientPeer.Send(OpCode.Account, AccountCode.Regist_Sres, -1);
                     return;
                 }
                 if (string.IsNullOrEmpty(account) || account.Length < 4 || account.Length > 16)
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, -2);
+                    clientPeer.Send(OpCode.Account, AccountCode.Regist_Sres, -2);
                     return;
                 }
                 if (string.IsNullOrEmpty(password) || password.Length < 4 || password.Length > 16)
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, -3);
+                    clientPeer.Send(OpCode.Account, AccountCode.Regist_Sres, -3);
                     return;
                 }
                 accountCache.Create(account, password); // 注册账号
 
                 Console.Clear();
                 LogAllAccount();
-                clientPeer.Send(OpCode.ACCOUNT, AccountCode.Regist_Sres, 0);
+                clientPeer.Send(OpCode.Account, AccountCode.Regist_Sres, 0);
             });
         }
 
@@ -91,17 +91,17 @@ namespace Card_Online_Game_Server.Logic
             {
                 if (!accountCache.IsExit(account))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, -1);
+                    clientPeer.Send(OpCode.Account, AccountCode.Login, -1);
                     return;
                 }
                 if (accountCache.IsOnline(account))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, -2);
+                    clientPeer.Send(OpCode.Account, AccountCode.Login, -2);
                     return;
                 }
                 if (!accountCache.IsMatch(account, password))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, -3);
+                    clientPeer.Send(OpCode.Account, AccountCode.Login, -3);
                     return;
                 }
                 accountCache.Online(clientPeer, account); // 上线账号
@@ -111,11 +111,11 @@ namespace Card_Online_Game_Server.Logic
 
                 if (userCache.IsExit(accountCache.GetId(clientPeer)))
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, 1);   // 存在角色
+                    clientPeer.Send(OpCode.Account, AccountCode.Login, 1);   // 存在角色
                 }
                 else
                 {
-                    clientPeer.Send(OpCode.ACCOUNT, AccountCode.LOGIN, 0);   // 不存在角色
+                    clientPeer.Send(OpCode.Account, AccountCode.Login, 0);   // 不存在角色
                 }
             });
         }

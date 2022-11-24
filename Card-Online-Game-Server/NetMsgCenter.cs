@@ -27,7 +27,7 @@ namespace Card_Online_Game_Server
         {
             switch (msg.OpCode)
             {
-                case OpCode.ACCOUNT:
+                case OpCode.Account:
                     account.OnReceive(client, msg.SubCode, msg.Value);
                     break;
 

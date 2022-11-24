@@ -8,7 +8,7 @@ namespace Protocol.Code
 {
     public class OpCode
     {
-        public const int ACCOUNT = 0; // 账号模块
+        public const int Account = 0; // 账号模块
         public const int User = 1; // 角色模块
     }
 }

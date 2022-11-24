@@ -12,8 +12,8 @@ namespace Protocol.Code.SubCode
     public class UserCode
     {
         // 获取信息
-        public const int Get_Cres = 0; // 客户端请求为C 服务器请求为S
 
+        public const int Get_Cres = 0;
         public const int Get_Sres = 1;
 
         // 创建角色
@@ -22,8 +22,8 @@ namespace Protocol.Code.SubCode
         public const int Create_Sres = 3;
 
         // 角色上线
-        public const int Onine_Cres = 4;
 
+        public const int Onine_Cres = 4;
         public const int Onine_Sres = 5;
     }
 }
