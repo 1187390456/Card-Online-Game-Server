@@ -15,5 +15,7 @@ namespace Protocol.Dto
         public Dictionary<int, UserDto> uidUserDic; // 用户id 对应 用户传输数据模型
 
         public List<int> readyList; // 准备玩家列表
+
+        public void Add(UserDto userDto) => uidUserDic.Add(userDto.Id, userDto); // 添加用户
     }
 }

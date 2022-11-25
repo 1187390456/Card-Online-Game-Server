@@ -12,6 +12,7 @@ namespace Protocol.Dto
     [Serializable]
     public class UserDto
     {
+        public int Id; // ID
         public string Avatar; // 头像
         public string AvatarMask; // 头像框
         public string Name; // 名称

@@ -91,6 +91,7 @@ namespace Card_Online_Game_Server.Logic
                 var userModel = userCache.GetUserModelByAccountId(accountId);  // 获取用户模型
                 UserDto userDto = new UserDto
                 {
+                    Id = userModel.Id,
                     Avatar = userModel.Avatar,
                     AvatarMask = userModel.AvatarMask,
                     RankLogo = userModel.RankLogo,

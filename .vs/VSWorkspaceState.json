@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\AhpilyServer",
+    "\\AhpilyServer\\TimerSys",
+    "\\Card-Online-Game-Server",
+    "\\Protocol",
+    "\\Protocol\\Dto"
+  ],
+  "SelectedNode": "\\Protocol\\Dto\\AccountDto.cs",
+  "PreviewInSolutionExplorer": false
+}

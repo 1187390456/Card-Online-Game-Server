@@ -62,9 +62,22 @@ namespace Card_Online_Game_Server.Logic
 
                 MatchRoom matchRoom = matchCache.Enter(userModel, clientPeer);      // 进入房间
 
-                matchRoom.Borcast(OpCode.Match, MatchCode.Enter_Bro, userModel.Id, clientPeer);     // 进入 广播给其他用户
+                UserDto userDto = new UserDto
+                {
+                    Id = userModel.Id,
+                    Avatar = userModel.Avatar,
+                    AvatarMask = userModel.AvatarMask,
+                    RankLogo = userModel.RankLogo,
+                    RankName = userModel.RankName,
+                    GradeLogo = userModel.GradeLogo,
+                    GradeName = userModel.GradeName,
+                    Name = userModel.Name,
+                }; // 当前用户传输模型
+
+                matchRoom.Borcast(OpCode.Match, MatchCode.Enter_Bro, userDto, clientPeer);     // 进入 广播给其他用户
 
                 MatchRoomDto matchRoomDto = CreateMatchRoomDto(matchRoom); // 重新获取当前房间状态
+
                 clientPeer.Send(OpCode.Match, MatchCode.Enter_Sres, matchRoomDto); // 发送房间状态
             });
         }
@@ -131,6 +144,7 @@ namespace Card_Online_Game_Server.Logic
             {
                 UserDto userDto = new UserDto
                 {
+                    Id = user.Id,
                     Avatar = user.Avatar,
                     AvatarMask = user.AvatarMask,
                     RankLogo = user.RankLogo,

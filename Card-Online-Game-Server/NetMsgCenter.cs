@@ -22,6 +22,7 @@ namespace Card_Online_Game_Server
         {
             account.OnDisconnect(client);
             user.OnDisconnect(client);
+            match.OnDisconnect(client);
         }
 
         public void OnReceive(ClientPeer client, SocketMsg msg)
