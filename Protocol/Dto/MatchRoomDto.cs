@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Protocol.Dto
 {
     /// <summary>
-    /// 房间传输数据模型
+    /// 房间传输数据模型 存储房间信息
     /// </summary>
     [Serializable]
     public class MatchRoomDto
@@ -17,5 +17,7 @@ namespace Protocol.Dto
         public List<int> readyList; // 准备玩家列表
 
         public void Add(UserDto userDto) => uidUserDic.Add(userDto.Id, userDto); // 添加用户
+
+        public void Remove(int userId) => uidUserDic.Remove(userId); // 移除用户
     }
 }

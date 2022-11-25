@@ -92,16 +92,28 @@ namespace Card_Online_Game_Server.Logic
             {
                 if (!userCache.IsOnline(clientPeer)) return; // 角色不在线
 
-                UserModel userModel = userCache.GetUserModelByClient(clientPeer);
+                UserModel userModel = userCache.GetUserModelByClient(clientPeer); // 获取当前客户端角色
 
                 if (!matchCache.IsUserHaveRoom(userModel)) return; // 当前用户不在房间
 
                 MatchRoom matchRoom = matchCache.GetUserRoom(userModel);
 
-                // 离开 广播给所有人 要先广播给所有人再离开 要不然自己收不到  这里先做测试
-                matchRoom.Borcast(OpCode.Match, MatchCode.Leave_Bro, userModel.Id);
+                UserDto userDto = new UserDto
+                {
+                    Id = userModel.Id,
+                    Avatar = userModel.Avatar,
+                    AvatarMask = userModel.AvatarMask,
+                    RankLogo = userModel.RankLogo,
+                    RankName = userModel.RankName,
+                    GradeLogo = userModel.GradeLogo,
+                    GradeName = userModel.GradeName,
+                    Name = userModel.Name,
+                }; // 当前用户传输模型
+
+                matchRoom.Borcast(OpCode.Match, MatchCode.Leave_Bro, userDto); // 离开 广播给所有人
 
                 matchCache.Leave(userModel); // 离开房间
+
             });
         }
 
