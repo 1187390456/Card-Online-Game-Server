@@ -4,9 +4,11 @@
     "\\AhpilyServer",
     "\\AhpilyServer\\TimerSys",
     "\\Card-Online-Game-Server",
+    "\\Card-Online-Game-Server\\Logic",
+    "\\Card-Online-Game-Server\\Model",
     "\\Protocol",
     "\\Protocol\\Dto"
   ],
-  "SelectedNode": "\\Protocol\\Dto\\AccountDto.cs",
+  "SelectedNode": "\\Card-Online-Game-Server\\Logic\\MatchHandler.cs",
   "PreviewInSolutionExplorer": false
 }
