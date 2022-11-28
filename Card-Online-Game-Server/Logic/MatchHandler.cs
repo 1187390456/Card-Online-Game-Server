@@ -110,7 +110,7 @@ namespace Card_Online_Game_Server.Logic
                     Name = userModel.Name,
                 }; // 当前用户传输模型
 
-                matchRoom.Borcast(OpCode.Match, MatchCode.Leave_Bro, userDto); // 离开 广播给所有人
+                matchRoom.Borcast(OpCode.Match, MatchCode.Leave_Bro, userDto); // 离开 广播给所有
 
                 matchCache.Leave(userModel); // 离开房间
 
@@ -166,7 +166,7 @@ namespace Card_Online_Game_Server.Logic
                     Name = user.Name,
                 }; // 当前用户传输模型
 
-                matchRoomDto.uidUserDic.Add(user.Id, userDto);
+                matchRoomDto.Add(userDto);
             }
             foreach (var user in matchRoom.UserReadyList)// 遍历存储准备玩家列表
             {

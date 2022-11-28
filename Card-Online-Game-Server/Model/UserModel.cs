@@ -20,6 +20,8 @@ namespace Card_Online_Game_Server.Model
         public string RankName; // 排位等级名称
         public string GradeLogo;// 等级图标地址
         public string GradeName; // 等级名称
+        public string BeanCount; // 豆子数量
+        public string DiamondCount; // 钻石数量
 
         public UserModel(int accountId, int id, string name)
         {
@@ -34,6 +36,8 @@ namespace Card_Online_Game_Server.Model
             RankName = "最强王者";
             GradeLogo = "https://tse1-mm.cn.bing.net/th/id/OIP-C.qXQ_cEdU0gbtmHArTfem4QHaFS?w=266&h=190&c=7&r=0&o=5&pid=1.7";
             GradeName = "皇帝";
+            BeanCount = "9999";
+            DiamondCount = "6666";
         }
     }
 }
