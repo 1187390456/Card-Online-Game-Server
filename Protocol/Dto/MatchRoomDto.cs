@@ -13,7 +13,7 @@ namespace Protocol.Dto
     [Serializable]
     public class MatchRoomDto
     {
-        public Dictionary<int, UserDto> uidUserDic; // 用户id 对应 用户传输数据模型
+        public Dictionary<int, UserDto> uidUserDic = new Dictionary<int, UserDto>(); // 用户id 对应 用户传输数据模型
 
         public List<int> readyList = new List<int>(); // 准备玩家列表
 

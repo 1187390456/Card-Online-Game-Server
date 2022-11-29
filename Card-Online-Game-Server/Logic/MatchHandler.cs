@@ -146,11 +146,7 @@ namespace Card_Online_Game_Server.Logic
 
         private MatchRoomDto CreateMatchRoomDto(MatchRoom matchRoom) // 创建传输模型 传输当前房间状态
         {
-            MatchRoomDto matchRoomDto = new MatchRoomDto // 初始化房间传输模型
-            {
-                uidUserDic = new Dictionary<int, UserDto>(),
-                readyList = new List<int>()
-            };
+            MatchRoomDto matchRoomDto = new MatchRoomDto(); // 初始化房间传输模型
 
             foreach (var user in matchRoom.UserClientDic.Keys) // 遍历存储玩家信息字典
             {
