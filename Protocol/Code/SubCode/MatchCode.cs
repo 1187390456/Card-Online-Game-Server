@@ -27,8 +27,12 @@ namespace Protocol.Code.SubCode
         public const int Ready_Cres = 5;
         public const int Ready_Bro = 6;
 
+        // 取消准备 
+        public const int CancleReady_Cres = 7;
+        public const int CancleReady_Bro = 8;
+
         // 开始游戏
 
-        public const int Start_Bro = 7;
+        public const int Start_Bro = 79;
     }
 }

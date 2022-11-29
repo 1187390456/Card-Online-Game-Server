@@ -34,6 +34,11 @@ namespace Protocol.Dto
             orderList.Remove(uidUserDic[userId]);
             uidUserDic.Remove(userId);
         }
+        public void Ready(int userId) => readyList.Add(userId); // 准备
+
+        public bool IsReady(int userId) => readyList.Exists(item => item == userId); // 该玩家是否准备
+
+        public void CancleReady(int userId) => readyList.Remove(userId); // 取消准备
 
         public void RefreshOrderList(int myUserid) //刷新顺序列表 只能用id判断
         {

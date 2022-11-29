@@ -40,7 +40,9 @@ namespace Card_Online_Game_Server.Logic
                 case MatchCode.Ready_Cres:
                     Ready(client);
                     break;
-
+                case MatchCode.CancleReady_Cres:
+                    CancleReady(client);
+                    break;
                 default:
                     break;
             }
@@ -72,6 +74,8 @@ namespace Card_Online_Game_Server.Logic
                     GradeLogo = userModel.GradeLogo,
                     GradeName = userModel.GradeName,
                     Name = userModel.Name,
+                    BeanCount = userModel.BeanCount,
+                    DiamondCount = userModel.DiamondCount,
                 }; // 当前用户传输模型
 
                 matchRoom.Borcast(OpCode.Match, MatchCode.Enter_Bro, userDto, clientPeer);     // 进入 广播给其他用户
@@ -108,7 +112,11 @@ namespace Card_Online_Game_Server.Logic
                     GradeLogo = userModel.GradeLogo,
                     GradeName = userModel.GradeName,
                     Name = userModel.Name,
+                    BeanCount = userModel.BeanCount,
+                    DiamondCount = userModel.DiamondCount,
                 }; // 当前用户传输模型
+
+                if (matchRoom.IsReady(userModel)) matchRoom.CancleReady(userModel); // 此人准备了就移除下
 
                 matchRoom.Borcast(OpCode.Match, MatchCode.Leave_Bro, userDto); // 离开 广播给所有
 
@@ -132,15 +140,68 @@ namespace Card_Online_Game_Server.Logic
                 if (!matchCache.IsUserHaveRoom(userModel)) return; // 当前用户不在房间
 
                 MatchRoom matchRoom = matchCache.GetUserRoom(userModel); // 获取房间
+
+                if (matchRoom.IsReady(userModel)) return; // 此人已经准备了
+
                 matchRoom.Ready(userModel); // 准备
 
-                matchRoom.Borcast(OpCode.Match, MatchCode.Ready_Bro, userModel.Id, clientPeer); // 广播给其他用户
+
+                UserDto userDto = new UserDto
+                {
+                    Id = userModel.Id,
+                    Avatar = userModel.Avatar,
+                    AvatarMask = userModel.AvatarMask,
+                    RankLogo = userModel.RankLogo,
+                    RankName = userModel.RankName,
+                    GradeLogo = userModel.GradeLogo,
+                    GradeName = userModel.GradeName,
+                    Name = userModel.Name,
+                    BeanCount = userModel.BeanCount,
+                    DiamondCount = userModel.DiamondCount,
+                }; // 当前用户传输模型
+
+                matchRoom.Borcast(OpCode.Match, MatchCode.Ready_Bro, userDto, clientPeer); // 广播给其他用户
 
                 if (matchRoom.IsAllReady()) // 所有玩家准备
                 {
                     matchRoom.Borcast(OpCode.Match, MatchCode.Start_Bro, null); //通知房间内其他玩家开始战斗了
                     matchCache.ClearRoom(matchRoom); // 清除房间
                 }
+            });
+        }
+        /// <summary>
+        ///  取消准备
+        /// </summary>
+        /// <param name="clientPeer"></param>
+        private void CancleReady(ClientPeer clientPeer)
+        {
+            SingleExecute.Instance.Execute(() =>
+            {
+                if (!userCache.IsOnline(clientPeer)) return; // 角色不在线
+
+                UserModel userModel = userCache.GetUserModelByClient(clientPeer);
+
+                if (!matchCache.IsUserHaveRoom(userModel)) return; // 当前用户不在房间
+
+                MatchRoom matchRoom = matchCache.GetUserRoom(userModel); // 获取房间
+                matchRoom.CancleReady(userModel); // 取消准备
+
+                UserDto userDto = new UserDto
+                {
+                    Id = userModel.Id,
+                    Avatar = userModel.Avatar,
+                    AvatarMask = userModel.AvatarMask,
+                    RankLogo = userModel.RankLogo,
+                    RankName = userModel.RankName,
+                    GradeLogo = userModel.GradeLogo,
+                    GradeName = userModel.GradeName,
+                    Name = userModel.Name,
+                    BeanCount = userModel.BeanCount,
+                    DiamondCount = userModel.DiamondCount,
+                }; // 当前用户传输模型
+
+                matchRoom.Borcast(OpCode.Match, MatchCode.CancleReady_Bro, userDto, clientPeer); // 广播给其他用户
+
             });
         }
 
@@ -160,6 +221,8 @@ namespace Card_Online_Game_Server.Logic
                     GradeLogo = user.GradeLogo,
                     GradeName = user.GradeName,
                     Name = user.Name,
+                    BeanCount = user.BeanCount,
+                    DiamondCount = user.DiamondCount,
                 }; // 当前用户传输模型
 
                 matchRoomDto.Add(userDto);
