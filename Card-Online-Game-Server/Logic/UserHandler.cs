@@ -99,6 +99,8 @@ namespace Card_Online_Game_Server.Logic
                     GradeLogo = userModel.GradeLogo,
                     GradeName = userModel.GradeName,
                     Name = userModel.Name,
+                    BeanCount = userModel.BeanCount,
+                    DiamondCount = userModel.DiamondCount,
                 }; // 用户传输模型
                 clientPeer.Send(OpCode.User, UserCode.Get_Sres, userDto); // 获取角色成功
 

@@ -34,6 +34,7 @@ namespace Protocol.Dto
             orderList.Remove(uidUserDic[userId]);
             uidUserDic.Remove(userId);
         }
+
         public void Ready(int userId) => readyList.Add(userId); // 准备
 
         public bool IsReady(int userId) => readyList.Exists(item => item == userId); // 该玩家是否准备
@@ -66,7 +67,7 @@ namespace Protocol.Dto
                     rightUserDto = orderList[1];
                     leftUserDto = orderList[2];
                 }
-                // 自己第二位 
+                // 自己第二位
                 if (orderList[1].Id == myUserid)
                 {
                     leftUserDto = orderList[0];

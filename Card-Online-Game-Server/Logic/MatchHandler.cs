@@ -40,9 +40,11 @@ namespace Card_Online_Game_Server.Logic
                 case MatchCode.Ready_Cres:
                     Ready(client);
                     break;
+
                 case MatchCode.CancleReady_Cres:
                     CancleReady(client);
                     break;
+
                 default:
                     break;
             }
@@ -121,7 +123,6 @@ namespace Card_Online_Game_Server.Logic
                 matchRoom.Borcast(OpCode.Match, MatchCode.Leave_Bro, userDto); // 离开 广播给所有
 
                 matchCache.Leave(userModel); // 离开房间
-
             });
         }
 
@@ -145,7 +146,6 @@ namespace Card_Online_Game_Server.Logic
 
                 matchRoom.Ready(userModel); // 准备
 
-
                 UserDto userDto = new UserDto
                 {
                     Id = userModel.Id,
@@ -160,7 +160,7 @@ namespace Card_Online_Game_Server.Logic
                     DiamondCount = userModel.DiamondCount,
                 }; // 当前用户传输模型
 
-                matchRoom.Borcast(OpCode.Match, MatchCode.Ready_Bro, userDto, clientPeer); // 广播给其他用户
+                matchRoom.Borcast(OpCode.Match, MatchCode.Ready_Bro, userDto); // 广播给所有用户
 
                 if (matchRoom.IsAllReady()) // 所有玩家准备
                 {
@@ -169,6 +169,7 @@ namespace Card_Online_Game_Server.Logic
                 }
             });
         }
+
         /// <summary>
         ///  取消准备
         /// </summary>
@@ -200,8 +201,7 @@ namespace Card_Online_Game_Server.Logic
                     DiamondCount = userModel.DiamondCount,
                 }; // 当前用户传输模型
 
-                matchRoom.Borcast(OpCode.Match, MatchCode.CancleReady_Bro, userDto, clientPeer); // 广播给其他用户
-
+                matchRoom.Borcast(OpCode.Match, MatchCode.CancleReady_Bro, userDto); // 广播给所有用户
             });
         }
 
