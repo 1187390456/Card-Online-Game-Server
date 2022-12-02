@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Card_Online_Game_Server.Cache.Match
+namespace Card_Online_Game_Server.Cache
 {
     /// <summary>
     /// 匹配房间 数据模型 不存数据库
@@ -20,11 +20,17 @@ namespace Card_Online_Game_Server.Cache.Match
         public List<UserModel> UserReadyList;// 当前房间已准备人员列表
 
         public bool IsFull() => UserClientDic.Count >= 3; // 房间是否满了
+
         public bool IsEmpty() => UserClientDic.Count == 0; //房间是否为空
+
         public bool IsAllReady() => UserReadyList.Count == 3; // 是否房间所有人准备
+
         public bool IsReady(UserModel userModel) => UserReadyList.Exists(item => item == userModel); // 该玩家是否准备
+
         public void Ready(UserModel userModel) => UserReadyList.Add(userModel); // 玩家准备
+
         public void CancleReady(UserModel userModel) => UserReadyList.Remove(userModel);//取消准备
+
         public void Enter(UserModel userModel, ClientPeer clientPeer) => UserClientDic.Add(userModel, clientPeer); // 进入房间
 
         public void Leave(UserModel userModel) => UserClientDic.Remove(userModel); // 离开房间
@@ -47,6 +53,5 @@ namespace Card_Online_Game_Server.Cache.Match
                 client.Send(packet);
             }
         }
-
     }
 }

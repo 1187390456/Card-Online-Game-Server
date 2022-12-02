@@ -17,12 +17,14 @@ namespace Card_Online_Game_Server
         private IHandler account = new AccountHandler();
         private IHandler user = new UserHandler();
         private IHandler match = new MatchHandler();
+        private IHandler chat = new ChatHandler();
 
         public void OnDisconnect(ClientPeer client)
         {
             account.OnDisconnect(client);
             user.OnDisconnect(client);
             match.OnDisconnect(client);
+            chat.OnDisconnect(client);
         }
 
         public void OnReceive(ClientPeer client, SocketMsg msg)
@@ -39,6 +41,10 @@ namespace Card_Online_Game_Server
 
                 case OpCode.Match:
                     match.OnReceive(client, msg.SubCode, msg.Value);
+                    break;
+
+                case OpCode.Chat:
+                    chat.OnReceive(client, msg.SubCode, msg.Value);
                     break;
 
                 default:

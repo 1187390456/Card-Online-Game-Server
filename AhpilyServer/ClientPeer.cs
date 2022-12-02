@@ -12,15 +12,15 @@ namespace AhpilyServer
     /// </summary>
     public class ClientPeer
     {
-        public Socket clientSocket { get; set; }
+        public Socket ClientSocket { get; set; }
 
         public ClientPeer()
         {
-            receiveArgs = new SocketAsyncEventArgs
+            ReceiveArgs = new SocketAsyncEventArgs
             {
                 UserToken = this // 将自身存储在userToken字段
             }; // 接收异步套接字
-            receiveArgs.SetBuffer(new byte[1024], 0, 1024); // 接收数据缓存区
+            ReceiveArgs.SetBuffer(new byte[1024], 0, 1024); // 接收数据缓存区
             sendArgs = new SocketAsyncEventArgs(); // 发送异步套接字
             sendArgs.Completed += SendArgs_Completed;
             sendQueue = new Queue<byte[]>(); // 消息队列
@@ -30,11 +30,11 @@ namespace AhpilyServer
 
         public delegate void ReceiveCompleted(ClientPeer client, SocketMsg msg); // 处理包完成事件委托
 
-        public ReceiveCompleted receiveCompleted { get; set; } //消息解析完成回调
+        public ReceiveCompleted Receive_Completed { get; set; } //消息解析完成回调
 
         private List<byte> dataCache = new List<byte>(); // 一旦接收到数据 存储到缓存区里面
 
-        public SocketAsyncEventArgs receiveArgs { get; set; } // 异步接收套接字请求
+        public SocketAsyncEventArgs ReceiveArgs { get; set; } // 异步接收套接字请求
 
         private bool isReceiveProcess = false; //是否正在处理接收数据
 
@@ -66,7 +66,7 @@ namespace AhpilyServer
             SocketMsg msg = EncodeTool.DecodeMsg(data); // 将收到的数据包转成 所需的消息类
 
             // 回调给上层
-            receiveCompleted?.Invoke(this, msg);
+            Receive_Completed?.Invoke(this, msg);
 
             // 尾递归
             ProcessReceive();
@@ -87,11 +87,11 @@ namespace AhpilyServer
             sendQueue.Clear();
             isSendProcess = false;
 
-            clientSocket.Shutdown(SocketShutdown.Both);  // 断开 发送/接受 消息 both都断开
-            clientSocket.Disconnect(true);
+            ClientSocket.Shutdown(SocketShutdown.Both);  // 断开 发送/接受 消息 both都断开
+            ClientSocket.Disconnect(true);
 
-            clientSocket.Close(); // 释放资源
-            clientSocket = null;
+            ClientSocket.Close(); // 释放资源
+            ClientSocket = null;
         }
 
         #endregion 断开连接
@@ -150,7 +150,7 @@ namespace AhpilyServer
             // 设置 异步套接字 数据缓冲区 即与异步套接字一起使用
             sendArgs.SetBuffer(packet, 0, packet.Length);
 
-            var res = clientSocket.SendAsync(sendArgs); // false 完成
+            var res = ClientSocket.SendAsync(sendArgs); // false 完成
             if (!res) ProcessSend();
         }
 

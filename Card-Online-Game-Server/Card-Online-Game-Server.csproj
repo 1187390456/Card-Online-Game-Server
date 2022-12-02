@@ -66,6 +66,7 @@
     <Compile Include="Cache\Match\MatchRoom.cs" />
     <Compile Include="Cache\UserCache.cs" />
     <Compile Include="Logic\AccountHandler.cs" />
+    <Compile Include="Logic\ChatHandler.cs" />
     <Compile Include="Logic\IHandler.cs" />
     <Compile Include="Logic\MatchHandler.cs" />
     <Compile Include="Logic\UserHandler.cs" />

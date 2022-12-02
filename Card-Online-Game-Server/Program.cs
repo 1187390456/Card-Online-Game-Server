@@ -9,7 +9,7 @@ namespace Card_Online_Game_Server
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             ServerPeer serverPeer = new ServerPeer();
             serverPeer.SetApplication(new NetMsgCenter());

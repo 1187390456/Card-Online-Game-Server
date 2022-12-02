@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Card_Online_Game_Server.Cache.Match
+namespace Card_Online_Game_Server.Cache
 {
     /// <summary>
     /// 匹配缓存层

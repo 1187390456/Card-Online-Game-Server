@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Protocol.Code.SubCode
+namespace Protocol.Code
 {
     /// <summary>
     /// 匹配相关操作码
@@ -27,8 +27,9 @@ namespace Protocol.Code.SubCode
         public const int Ready_Cres = 5;
         public const int Ready_Bro = 6;
 
-        // 取消准备 
+        // 取消准备
         public const int CancleReady_Cres = 7;
+
         public const int CancleReady_Bro = 8;
 
         // 开始游戏

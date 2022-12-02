@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Protocol.Code.SubCode
+namespace Protocol.Code
 {
     /// <summary>
     /// 角色相关操作码

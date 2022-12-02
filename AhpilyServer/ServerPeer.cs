@@ -60,8 +60,8 @@ namespace AhpilyServer
                 for (int i = 0; i < maxCount; i++)
                 {
                     clientPeer = new ClientPeer();
-                    clientPeer.receiveArgs.Completed += Receive_Completed; // 绑定异步接收事件完成回调
-                    clientPeer.receiveCompleted = Receive_Completed; // 一条解析数据完成回调
+                    clientPeer.ReceiveArgs.Completed += Receive_Completed; // 绑定异步接收事件完成回调
+                    clientPeer.Receive_Completed = Receive_Completed; // 一条解析数据完成回调
                     clientPeer.sendDisconnect = Disconnect;
                     clientPeerPool.Enqueue(clientPeer);
                 }
@@ -105,9 +105,9 @@ namespace AhpilyServer
             acceptSemaphore.WaitOne();// 每连接一个 进行计数
 
             ClientPeer client = clientPeerPool.Dequeue();
-            client.clientSocket = e.AcceptSocket;
+            client.ClientSocket = e.AcceptSocket;
 
-            Console.WriteLine("客户端连接成功 !" + client.clientSocket.RemoteEndPoint.ToString());
+            Console.WriteLine("客户端连接成功 !" + client.ClientSocket.RemoteEndPoint.ToString());
 
             // 开始接收数据
             StartReceive(client);
@@ -135,8 +135,8 @@ namespace AhpilyServer
         {
             try
             {
-                var res = client.clientSocket.ReceiveAsync(client.receiveArgs);
-                if (!res) ProcessReceive(client.receiveArgs);
+                var res = client.ClientSocket.ReceiveAsync(client.ReceiveArgs);
+                if (!res) ProcessReceive(client.ReceiveArgs);
             }
             catch (Exception ex)
             {
@@ -153,11 +153,11 @@ namespace AhpilyServer
             ClientPeer client = e.UserToken as ClientPeer; // 通过存储在自身的userToken 拿到自身客户端
 
             // 判断网络消息是否接收成功 确保成功 且 传输字节数有值(长度大于0)
-            if (client.receiveArgs.SocketError == SocketError.Success && client.receiveArgs.BytesTransferred > 0)
+            if (client.ReceiveArgs.SocketError == SocketError.Success && client.ReceiveArgs.BytesTransferred > 0)
             {
                 // 拷贝当前客户端字节数据 即数据包
-                byte[] packet = new byte[client.receiveArgs.BytesTransferred];
-                Buffer.BlockCopy(client.receiveArgs.Buffer, 0, packet, 0, client.receiveArgs.BytesTransferred);
+                byte[] packet = new byte[client.ReceiveArgs.BytesTransferred];
+                Buffer.BlockCopy(client.ReceiveArgs.Buffer, 0, packet, 0, client.ReceiveArgs.BytesTransferred);
 
                 // 让客户端自身处理数据包 自身解析
                 client.StartReceive(packet);
@@ -165,9 +165,9 @@ namespace AhpilyServer
                 StartReceive(client); // 尾递归 闭环
             }
             // 没有传输的字节数 代表断开连接了
-            else if (client.receiveArgs.BytesTransferred == 0)
+            else if (client.ReceiveArgs.BytesTransferred == 0)
             {
-                if (client.receiveArgs.SocketError == SocketError.Success)
+                if (client.ReceiveArgs.SocketError == SocketError.Success)
                 {
                     // 客户端主动断开连接
                     Disconnect(client, "客户端主动断开连接");
@@ -175,7 +175,7 @@ namespace AhpilyServer
                 else
                 {
                     // 异常断开 网络异常等
-                    Disconnect(client, client.receiveArgs.SocketError.ToString());
+                    Disconnect(client, client.ReceiveArgs.SocketError.ToString());
                 }
             }
         }
@@ -213,7 +213,7 @@ namespace AhpilyServer
             {
                 if ((client == null)) throw new Exception("当前指定的客户端连接对象为空 无法断开连接");
 
-                Console.WriteLine(client.clientSocket.RemoteEndPoint.ToString() + "客户端断开连接 原因:" + reason);
+                Console.WriteLine(client.ClientSocket.RemoteEndPoint.ToString() + "客户端断开连接 原因:" + reason);
                 // 通知应用层 客户端断开连接了
                 application.OnDisconnect(client);
 
