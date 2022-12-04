@@ -2,3 +2,13 @@ AhpilyServer/obj/
 Card-Online-Game-Server/obj/
 Protocol/obj/
 Card-Online-Game-Server/.vs/
+Card-Online-Game-Server/bin/Debug/Card-Online-Game-Server.application
+Card-Online-Game-Server/bin/Debug/Card-Online-Game-Server.exe.config
+Card-Online-Game-Server/bin/Debug/Card-Online-Game-Server.exe.manifest
+Card-Online-Game-Server/bin/Debug/app.publish/Card-Online-Game-Server.application
+Card-Online-Game-Server/bin/Debug/app.publish/publish.htm
+Card-Online-Game-Server/bin/Debug/app.publish/Application Files/Card-Online-Game-Server_1_0_0_0/AhpilyServer.dll.deploy
+Card-Online-Game-Server/bin/Debug/app.publish/Application Files/Card-Online-Game-Server_1_0_0_0/Card-Online-Game-Server.exe.config.deploy
+Card-Online-Game-Server/bin/Debug/app.publish/Application Files/Card-Online-Game-Server_1_0_0_0/Card-Online-Game-Server.exe.deploy
+Card-Online-Game-Server/bin/Debug/app.publish/Application Files/Card-Online-Game-Server_1_0_0_0/Card-Online-Game-Server.exe.manifest
+Card-Online-Game-Server/bin/Debug/app.publish/Application Files/Card-Online-Game-Server_1_0_0_0/Protocol.dll.deploy
