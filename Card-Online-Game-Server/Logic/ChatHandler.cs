@@ -33,7 +33,7 @@ namespace Card_Online_Game_Server.Logic
                     break;
 
                 case ChatCode.Send_Emoji_Cres:
-                    SendEmoji(client, (int)value);
+                    SendEmoji(client, (string)value);
                     break;
 
                 default:
@@ -101,8 +101,8 @@ namespace Card_Online_Game_Server.Logic
         /// 有人发送表情
         /// </summary>
         /// <param name="clientPeer"></param>
-        /// <param name="text"></param>
-        private void SendEmoji(ClientPeer clientPeer, int index)
+        /// <param name="name"></param>
+        private void SendEmoji(ClientPeer clientPeer, string name)
         {
             SingleExecute.Instance.Execute(() =>
             {
@@ -112,13 +112,13 @@ namespace Card_Online_Game_Server.Logic
                 ChatDto chatDto = new ChatDto
                 {
                     id = userModel.Id,
-                    Index = index,
+                    text = name,
                 };
 
                 if (matchCache.IsUserHaveRoom(userModel))
                 {
                     var room = matchCache.GetUserRoom(userModel);
-                    room.Borcast(OpCode.Chat, ChatCode.Send_Emoji_Cres, chatDto);
+                    room.Borcast(OpCode.Chat, ChatCode.Send_Emoji_Bro, chatDto);
                 }
                 else
                 {
