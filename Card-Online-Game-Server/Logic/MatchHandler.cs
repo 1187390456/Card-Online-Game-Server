@@ -18,7 +18,6 @@ namespace Card_Online_Game_Server.Logic
 
         public void OnDisconnect(ClientPeer client)
         {
-            if (!userCache.IsOnline(client)) return;
             UserModel userModel = userCache.GetUserModelByClient(client); // 获取当前客户端角色
             if (matchCache.IsUserHaveRoom(userModel)) Leave(client); // 角色在房间则调用离开房间
         }

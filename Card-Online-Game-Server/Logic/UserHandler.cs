@@ -22,7 +22,6 @@ namespace Card_Online_Game_Server.Logic
         public void OnDisconnect(ClientPeer client)
         {
             if (userCache.IsOnline(client)) userCache.Offline(client);
-            if (accountCache.IsOnline(client)) accountCache.Offline(client);
         }
 
         public void OnReceive(ClientPeer client, int subCode, object value)

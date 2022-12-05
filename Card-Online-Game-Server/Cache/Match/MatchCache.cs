@@ -92,12 +92,12 @@ namespace Card_Online_Game_Server.Cache
         {
             currentAliveRoom.Remove(matchRoom.Id); // 移除当前房间
 
-            foreach (var userModel in matchRoom.UserClientDic.Keys)   // 移除房间中的玩家
+            foreach (var userModel in matchRoom.UserClientDic.Keys)   // 移除玩家与房间绑定
             {
                 userRoomIdDic.Remove(userModel);
             }
 
-            matchRoom.Clear();
+            matchRoom.Clear(); // 清除准备列表和房间中的玩家
             roomQueue.Enqueue(matchRoom);
         }
     }
