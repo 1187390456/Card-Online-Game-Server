@@ -16,8 +16,14 @@ namespace Card_Online_Game_Server
     {
         private IHandler account = new AccountHandler();
         private IHandler user = new UserHandler();
-        private IHandler match = new MatchHandler();
+        private MatchHandler match = new MatchHandler();
         private IHandler chat = new ChatHandler();
+        private FightHandler fight = new FightHandler();
+
+        public NetMsgCenter()
+        {
+            match.StartFightAction += fight.StartFight; // 注册战斗委托
+        }
 
         public void OnDisconnect(ClientPeer client)
         {
@@ -26,6 +32,7 @@ namespace Card_Online_Game_Server
             match.OnDisconnect(client);
             user.OnDisconnect(client);
             account.OnDisconnect(client);
+            fight.OnDisconnect(client);
         }
 
         public void OnReceive(ClientPeer client, SocketMsg msg)

@@ -35,6 +35,8 @@ namespace Card_Online_Game_Server.Cache
 
         public void Leave(UserModel userModel) => UserClientDic.Remove(userModel); // 离开房间
 
+        public List<UserModel> GetAllUserModel() => UserClientDic.Keys.ToList(); // 获取当前房间所有玩家
+
         public void Clear() // 清空列表
         {
             UserClientDic.Clear();

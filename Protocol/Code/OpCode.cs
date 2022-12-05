@@ -12,5 +12,6 @@ namespace Protocol.Code
         public const int User = 1; // 角色模块
         public const int Match = 3; // 匹配房间模块
         public const int Chat = 4; // 聊天模块
+        public const int Fight = 5; // 战斗模块
     }
 }
