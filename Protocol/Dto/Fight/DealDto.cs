@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Protocol.Dto.Fight
+namespace Protocol.Dto
 {
     /// <summary>
     /// 出牌传输模型

@@ -30,7 +30,7 @@ namespace Card_Online_Game_Server.Logic
 
                 case FightCode.Deal_Cres:
                     // GrabLandowner(client, (bool)value);
-                    Deal();
+                    Deal(client, (DealDto)value);
                     break;
 
                 default:
@@ -89,9 +89,87 @@ namespace Card_Online_Game_Server.Logic
             });
         }
 
-        // 出牌
-        private void Deal()
+        // 出牌处理
+        private void Deal(ClientPeer client, DealDto dealDto)
         {
+            SingleExecute.Instance.Execute(() =>
+            {
+                if (!userCache.IsOnline(client)) return; // 玩家不在线
+
+                int uid = userCache.GetIdByClient(client);
+
+                if (!fightCache.IsUserHaveFightRoom(uid)) return; // 玩家没有战斗房间
+
+                FightRoom room = fightCache.GetFightRoomByUid(uid);
+
+                if (room.RunAwayLists.Contains(uid)) Turn(room); // 玩家逃跑 转换出牌
+
+                var canDeal = room.JudgeCanDeal(dealDto.Length, dealDto.Type, dealDto.Weight, dealDto.Uid, dealDto.SelectCardList);
+
+                if (!canDeal)
+                {
+                    client.Send(OpCode.Fight, FightCode.Deal_Sres, -1); // 不能出牌 自身响应
+                }
+                else
+                {
+                    client.Send(OpCode.Fight, FightCode.Deal_Sres, 0); // 出牌成功 自身响应
+
+                    Borcast(room, OpCode.Fight, FightCode.Deal_Bro, dealDto, client); // 出牌成功 其他人响应
+
+                    // 判断玩家手牌
+                    if (room.GetPlayerDto(uid).Cards.Count == 0)
+                    {
+                        // 游戏结束
+                    }
+                    else Turn(room); // 转换出牌
+                }
+            });
+        }
+
+        // 游戏结束
+        private void GameOver(int winnerId, FightRoom room)
+        {
+            List<UserModel> formarList = new List<UserModel>();
+            UserModel Landowner = null;
+
+            // 获取地主和农民的数据模型
+            for (int i = 0; i < room.PlayerList.Count; i++)
+            {
+                if (room.GetLandownerUid() == room.PlayerList[i].Id)
+                {
+                    Landowner = userCache.GetUserModelByUid(room.PlayerList[i].Id);
+                }
+                else
+                {
+                    var model = userCache.GetUserModelByUid(room.PlayerList[i].Id);
+                    formarList.Add(model);
+                }
+            }
+
+            if (room.GetLandownerUid() == winnerId) // 地主获胜
+            {
+                // 地主胜场+1 加豆子
+                var userModel = userCache.GetUserModelByUid(winnerId);
+                userModel.BeanCount += 3000;
+
+                // 农民负场+1 减豆子
+            }
+            else // 农民获胜
+            {
+            }
+        }
+
+        // 转换出牌
+        private void Turn(FightRoom room)
+        {
+            int nextUid = room.Turn();
+
+            if (room.JudgeIsRunAway(nextUid)) Turn(room); // 下一个玩家掉线则跳过
+            else
+            {
+                ClientPeer nextClient = userCache.GetClientById(nextUid);  // 下一个玩家的客户端
+                nextClient.Send(OpCode.Fight, FightCode.Turn_Deal_Bro, nextUid); // 下一个玩家出牌 广播
+            }
         }
 
         public void Borcast(FightRoom room, int opCode, int subCode, object value, ClientPeer currentClient = null)     // 广播

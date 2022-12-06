@@ -42,17 +42,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\SubCode\ChatCode.cs" />
+    <Compile Include="Code\SubCode\FightCode.cs" />
     <Compile Include="Code\SubCode\MatchCode.cs" />
     <Compile Include="Code\SubCode\UserCode.cs" />
     <Compile Include="Constant\ChatConstant.cs" />
     <Compile Include="Constant\Fight\CardColor.cs" />
     <Compile Include="Constant\Fight\CardType.cs" />
     <Compile Include="Constant\Fight\CardWeight.cs" />
+    <Compile Include="Constant\Fight\FightIdentity.cs" />
     <Compile Include="Dto\AccountDto.cs" />
     <Compile Include="Code\SubCode\AccountCode.cs" />
     <Compile Include="Code\OpCode.cs" />
     <Compile Include="Dto\ChatDto.cs" />
     <Compile Include="Dto\Fight\CardDto.cs" />
+    <Compile Include="Dto\Fight\DealDto.cs" />
+    <Compile Include="Dto\Fight\GrabDto.cs" />
     <Compile Include="Dto\Fight\PlayerDto.cs" />
     <Compile Include="Dto\MatchRoomDto.cs" />
     <Compile Include="Dto\UserDto.cs" />

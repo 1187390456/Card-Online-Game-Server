@@ -55,42 +55,52 @@ namespace Card_Online_Game_Server.Cache
             return nextUid;
         }
 
-        // 判断是否可以管牌
-        public bool JudgeCanHandle(int length, int type, int weight, int userId, List<CardDto> cardList)
+        // 判断是否可以管牌 可以则处理
+        public bool JudgeCanDeal(int length, int type, int weight, int userId, List<CardDto> cardList)
         {
+            bool canDeal = false;
             if (type == FightRound.LastCardType && weight > FightRound.LastCardWeight)
             {
                 if (type == CardType.Straight || type == CardType.Double_Straight) // 顺子和连对 加判断长度
                 {
                     if (length >= FightRound.LastCardLength)
                     {
-                        return true;
+                        canDeal = true;
                     }
                 }
-                else return true;
+                else canDeal = true;
             }
             else if (type == CardType.Boom && FightRound.LastCardType != CardType.Boom)
             {
                 Multiple *= 4;
-                return true; // 普通炸弹
+                canDeal = true; // 普通炸弹
             }
             else if (type == CardType.Joker_Boom)
             {
                 Multiple *= 8;
-                return true; // 王炸
+                canDeal = true; // 王炸
             }
 
-            return false;
+            if (canDeal)
+            {
+                RemoveCards(userId, cardList);
+                FightRound.Change(length, type, weight, userId);
+            }
+
+            return canDeal;
         }
 
+        // 判断是否逃跑
+        public bool JudgeIsRunAway(int uid) => RunAwayLists.Contains(uid);
+
         // 移除玩家手牌
-        public void RemoveCards(int userId, List<CardDto> remoteCardList)
+        public void RemoveCards(int userId, List<CardDto> removeCardList)
         {
             var currentCardList = GetUserCards(userId);
 
             for (int i = currentCardList.Count - 1; i >= 0; i--)
             {
-                foreach (var card in remoteCardList)
+                foreach (var card in removeCardList)
                 {
                     if (currentCardList[i].Name == card.Name) currentCardList.RemoveAt(i);
                 }

@@ -28,6 +28,8 @@ namespace Card_Online_Game_Server.Cache
 
         public UserModel GetUserModelByAccountId(int accountId) => userModelDic[accUidDic[accountId]]; // 根据账号id获取角色模型
 
+        public UserModel GetUserModelByUid(int uid) => userModelDic[uid]; //根据角色id获取角色模型
+
         public int GetIdByAccountId(int accountId) => accUidDic[accountId]; // 根据账号id获取角色id
 
         #region 上线相关
