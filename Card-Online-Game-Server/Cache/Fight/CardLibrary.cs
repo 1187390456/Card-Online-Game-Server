@@ -1,5 +1,5 @@
 ﻿using Protocol.Constant;
-using Protocol.Dto.Fight;
+using Protocol.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Protocol.Dto.Fight
+namespace Protocol.Dto
 {
     /// <summary>
     /// 玩家传输模型

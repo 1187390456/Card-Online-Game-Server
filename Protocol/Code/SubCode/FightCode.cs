@@ -13,8 +13,8 @@ namespace Protocol.Code
     {
         // 抢地主
 
-        public const int Grad_Landowner_Cres = 0; // 抢地主
-        public const int Grad_Landowner_Bro = 1; // 抢地主广播
+        public const int Grab_Landowner_Cres = 0; // 抢地主
+        public const int Grab_Landowner_Bro = 1; // 抢地主广播
         public const int Turn_Grad_Bro = 2; // 抢地主轮换广播
 
         // 出牌

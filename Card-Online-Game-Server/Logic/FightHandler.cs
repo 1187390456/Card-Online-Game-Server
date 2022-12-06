@@ -2,6 +2,7 @@
 using Card_Online_Game_Server.Cache;
 using Card_Online_Game_Server.Model;
 using Protocol.Code;
+using Protocol.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,15 @@ namespace Card_Online_Game_Server.Logic
 
         public void OnReceive(ClientPeer client, int subCode, object value)
         {
+            switch (subCode)
+            {
+                case FightCode.Grab_Landowner_Cres:
+                    GrabLandowner(client, (bool)value);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         // 开始战斗
@@ -42,7 +52,35 @@ namespace Card_Online_Game_Server.Logic
                 }
 
                 // 开始抢地主
-                Borcast(room, OpCode.Fight, FightCode.Grad_Landowner_Bro, room.GetStartUid());
+                Borcast(room, OpCode.Fight, FightCode.Grab_Landowner_Bro, room.GetStartUid());
+            });
+        }
+
+        // 抢地主
+        private void GrabLandowner(ClientPeer client, bool isGrabe)
+        {
+            SingleExecute.Instance.Execute(() =>
+            {
+                if (!userCache.IsOnline(client)) return; // 玩家不在线
+
+                int uid = userCache.GetIdByClient(client);
+
+                if (!fightCache.IsUserHaveFightRoom(uid)) return; // 玩家没有战斗房间
+
+                FightRoom room = fightCache.GetFightRoomByUid(uid);
+
+                // 是否抢地主 这里抢到直接给 后期优化
+                if (isGrabe)
+                {
+                    room.SetLandowner(uid);
+                    GrabDto grabDto = new GrabDto(uid, room.TableCardList);
+                    Borcast(room, OpCode.Fight, FightCode.Grab_Landowner_Bro, grabDto); // 广播抢地主消息 成功结果
+                }
+                else
+                {
+                    int nextId = room.GetNextUid(uid);
+                    Borcast(room, OpCode.Fight, FightCode.Turn_Grad_Bro, nextId); // 不抢地主 转换 发送下一个玩家id
+                }
             });
         }
 
