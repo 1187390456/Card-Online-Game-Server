@@ -21,9 +21,11 @@ namespace Card_Online_Game_Server.Cache.Fight
             Shuffle();
         }
 
-        // 下一轮开始 洗牌
-        public void NextRound()
+        // 初始化 下一轮开始 洗牌
+        public void Init()
         {
+            CreateNormalCard();
+            Shuffle();
         }
 
         public CardDto Deal() => CardQueue.Dequeue(); // 发牌

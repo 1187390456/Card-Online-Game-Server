@@ -130,10 +130,10 @@ namespace Card_Online_Game_Server.Cache.Fight
 
         public int GetLandownerUid() => PlayerList.Find(item => item.Identify == FightIdentity.Landowner).Id; // 获取地主玩家id
 
-        public int GetStartUid()
+        public int GetStartUid() // 返回随机玩家id 叫地主
         {
             Random rand = new Random();
-            return PlayerList[rand.Next(0, 3)].Id; // 返回随机玩家id 叫地主
+            return PlayerList[rand.Next(0, 3)].Id;
         }
 
         public void SordAllCard(bool order) // 给所有牌排序

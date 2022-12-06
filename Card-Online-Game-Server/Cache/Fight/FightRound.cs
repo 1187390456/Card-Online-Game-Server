@@ -42,5 +42,25 @@ namespace Card_Online_Game_Server.Cache.Fight
         {
             CurrentUid = uid;
         }
+
+        public FightRound()
+        {
+            CurrentUid = -1;
+            LastUid = -1;
+
+            LastCardLength = -1;
+            LastCardWeight = -1;
+            LastCardType = -1;
+        }
+
+        public void Init()
+        {
+            CurrentUid = -1;
+            LastUid = -1;
+
+            LastCardLength = -1;
+            LastCardWeight = -1;
+            LastCardType = -1;
+        }
     }
 }
