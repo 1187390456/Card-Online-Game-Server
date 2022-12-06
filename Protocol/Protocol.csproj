@@ -46,6 +46,7 @@
     <Compile Include="Code\SubCode\UserCode.cs" />
     <Compile Include="Constant\ChatConstant.cs" />
     <Compile Include="Constant\Fight\CardColor.cs" />
+    <Compile Include="Constant\Fight\CardType.cs" />
     <Compile Include="Constant\Fight\CardWeight.cs" />
     <Compile Include="Dto\AccountDto.cs" />
     <Compile Include="Code\SubCode\AccountCode.cs" />
