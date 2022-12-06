@@ -16,7 +16,7 @@ namespace Card_Online_Game_Server.Logic
         public MatchCache matchCache = Caches.MatchCache;
         public UserCache userCache = Caches.UserCache;
 
-        public Action<List<UserModel>> StartFightAction; // 开始战斗回调委托
+        public Action<List<int>> StartFightAction; // 开始战斗回调委托
 
         public void OnDisconnect(ClientPeer client)
         {
@@ -163,7 +163,7 @@ namespace Card_Online_Game_Server.Logic
 
                 if (matchRoom.IsAllReady()) // 所有玩家准备
                 {
-                    StartFightAction(matchRoom.GetAllUserModel()); // 通知服务器开始战斗了
+                    StartFightAction(matchRoom.GetAllUserId()); // 通知服务器开始战斗了
 
                     matchRoom.Borcast(OpCode.Match, MatchCode.Start_Bro, null); //通知房间内其他玩家开始战斗了
                     matchCache.ClearRoom(matchRoom); // 清除房间

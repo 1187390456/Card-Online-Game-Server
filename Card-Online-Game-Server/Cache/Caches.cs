@@ -15,11 +15,14 @@ namespace Card_Online_Game_Server.Cache
         public static UserCache UserCache { get; set; }
         public static MatchCache MatchCache { get; set; }
 
+        public static FightCache FightCache { get; set; }
+
         static Caches()
         {
             AccountCache = new AccountCache();
             UserCache = new UserCache();
             MatchCache = new MatchCache();
+            FightCache = new FightCache();
         }
     }
 }

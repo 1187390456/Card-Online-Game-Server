@@ -1,4 +1,5 @@
-﻿using Protocol.Constant;
+﻿using AhpilyServer;
+using Protocol.Constant;
 using Protocol.Dto.Fight;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Card_Online_Game_Server.Cache.Fight
+namespace Card_Online_Game_Server.Cache
 {
     public class FightRoom
     {
@@ -136,7 +137,7 @@ namespace Card_Online_Game_Server.Cache.Fight
             return PlayerList[rand.Next(0, 3)].Id;
         }
 
-        public void SordAllCard(bool order) // 给所有牌排序
+        public void SordAllCard(bool order = true) // 给所有牌排序
         {
             for (int i = 0; i < PlayerList.Count; i++)
             {
