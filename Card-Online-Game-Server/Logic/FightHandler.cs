@@ -28,6 +28,11 @@ namespace Card_Online_Game_Server.Logic
                     GrabLandowner(client, (bool)value);
                     break;
 
+                case FightCode.Deal_Cres:
+                    // GrabLandowner(client, (bool)value);
+                    Deal();
+                    break;
+
                 default:
                     break;
             }
@@ -82,6 +87,11 @@ namespace Card_Online_Game_Server.Logic
                     Borcast(room, OpCode.Fight, FightCode.Turn_Grad_Bro, nextId); // 不抢地主 转换 发送下一个玩家id
                 }
             });
+        }
+
+        // 出牌
+        private void Deal()
+        {
         }
 
         public void Borcast(FightRoom room, int opCode, int subCode, object value, ClientPeer currentClient = null)     // 广播
