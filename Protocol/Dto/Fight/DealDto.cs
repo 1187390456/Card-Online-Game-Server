@@ -32,10 +32,11 @@ namespace Protocol.Dto.Fight
         public DealDto(List<CardDto> cardList, int uid)
         {
             SelectCardList = cardList;
-            Uid = uid;
             Length = cardList.Count;
-
+            Type = CardType.GetCardType(cardList);
             Weight = CardWeight.GetWeight(cardList, Type);
+            Uid = uid;
+            IsRegular = (Type != CardType.None);
         }
     }
 }

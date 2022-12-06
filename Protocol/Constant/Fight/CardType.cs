@@ -138,5 +138,104 @@ namespace Protocol.Constant
 
             return false;
         }
+
+        public static int GetCardType(List<CardDto> cards) // 获取卡牌类型
+        {
+            int cardType = None;
+            switch (cards.Count)
+            {
+                case 1:
+                    if (IsSingle(cards)) cardType = Single;
+                    break;
+
+                case 2:
+                    if (IsDouble(cards)) cardType = Double;
+                    else if (IsJokerBoom(cards)) cardType = Joker_Boom;
+                    break;
+
+                case 3:
+                    if (IsThree(cards)) cardType = Three;
+                    break;
+
+                case 4:
+                    if (IsBoom(cards)) cardType = Boom; // 这里先判断炸弹
+                    else if (IsThreeOne(cards)) cardType = Three_One;
+                    break;
+
+                case 5:
+                    if (IsThreeTwo(cards)) cardType = Three_Two;
+                    else if (IsStraight(cards)) cardType = Straight;
+                    break;
+
+                case 6:
+                    if (IsStraight(cards)) cardType = Straight;
+                    else if (IsDoubleStraight(cards)) cardType = Double_Straight;
+                    else if (IsTripleStraight(cards)) cardType = Triple_Straight;
+                    break;
+
+                case 7:
+                    if (IsStraight(cards)) cardType = Straight;
+                    break;
+
+                case 8:
+                    if (IsStraight(cards)) cardType = Straight;
+                    if (IsDoubleStraight(cards)) cardType = Double_Straight;
+                    break;
+
+                case 9:
+                    if (IsStraight(cards)) cardType = Straight;
+                    else if (IsTripleStraight(cards)) cardType = Triple_Straight;
+                    break;
+
+                case 10:
+                    if (IsStraight(cards)) cardType = Straight;
+                    if (IsDoubleStraight(cards)) cardType = Double_Straight;
+                    break;
+
+                case 11:
+                    if (IsStraight(cards)) cardType = Straight;
+                    break;
+
+                case 12:
+                    if (IsStraight(cards)) cardType = Straight;
+                    else if (IsDoubleStraight(cards)) cardType = Double_Straight;
+                    else if (IsTripleStraight(cards)) cardType = Triple_Straight;
+                    break;
+
+                case 13:
+                    break;
+
+                case 14:
+                    if (IsDoubleStraight(cards)) cardType = Double_Straight;
+                    break;
+
+                case 15:
+                    if (IsTripleStraight(cards)) cardType = Triple_Straight;
+                    break;
+
+                case 16:
+                    if (IsDoubleStraight(cards)) cardType = Double_Straight;
+                    break;
+
+                case 17:
+                    break;
+
+                case 18:
+                    if (IsDoubleStraight(cards)) cardType = Double_Straight;
+                    else if (IsTripleStraight(cards)) cardType = Triple_Straight;
+                    break;
+
+                case 19:
+                    break;
+
+                case 20:
+                    if (IsDoubleStraight(cards)) cardType = Double_Straight;
+                    break;
+
+                default:
+                    break;
+            }
+            return cardType;
+        }
     }
 }
