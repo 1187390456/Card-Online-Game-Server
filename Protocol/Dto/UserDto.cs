@@ -20,7 +20,7 @@ namespace Protocol.Dto
         public string RankName; // 排位名称
         public string GradeLogo; // 等级logo
         public string GradeName; // 等级名称
-        public string BeanCount; // 豆子数量
-        public string DiamondCount; // 钻石数量
+        public int BeanCount; // 豆子数量
+        public int DiamondCount; // 钻石数量
     }
 }

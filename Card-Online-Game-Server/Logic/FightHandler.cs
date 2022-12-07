@@ -2,6 +2,7 @@
 using Card_Online_Game_Server.Cache;
 using Card_Online_Game_Server.Model;
 using Protocol.Code;
+using Protocol.Constant;
 using Protocol.Dto;
 using System;
 using System.Collections.Generic;
@@ -18,19 +19,39 @@ namespace Card_Online_Game_Server.Logic
 
         public void OnDisconnect(ClientPeer client)
         {
+            if (!userCache.IsOnline(client)) return; // 玩家不在线
+
+            int uid = userCache.GetIdByClient(client);
+
+            if (!fightCache.IsUserHaveFightRoom(uid)) return; // 玩家没有战斗房间
+
+            FightRoom room = fightCache.GetFightRoomByUid(uid);
+
+            Leave(uid, room);
         }
 
         public void OnReceive(ClientPeer client, int subCode, object value)
         {
+            if (!userCache.IsOnline(client)) return; // 玩家不在线
+
+            int uid = userCache.GetIdByClient(client);
+
+            if (!fightCache.IsUserHaveFightRoom(uid)) return; // 玩家没有战斗房间
+
+            FightRoom room = fightCache.GetFightRoomByUid(uid);
+
             switch (subCode)
             {
                 case FightCode.Grab_Landowner_Cres:
-                    GrabLandowner(client, (bool)value);
+                    GrabLandowner((bool)value, uid, room);
                     break;
 
                 case FightCode.Deal_Cres:
-                    // GrabLandowner(client, (bool)value);
-                    Deal(client, (DealDto)value);
+                    Deal(client, (DealDto)value, uid, room);
+                    break;
+
+                case FightCode.Pass_Cres:
+                    Pass(client, uid, room);
                     break;
 
                 default:
@@ -62,18 +83,10 @@ namespace Card_Online_Game_Server.Logic
         }
 
         // 抢地主
-        private void GrabLandowner(ClientPeer client, bool isGrabe)
+        private void GrabLandowner(bool isGrabe, int uid, FightRoom room)
         {
             SingleExecute.Instance.Execute(() =>
             {
-                if (!userCache.IsOnline(client)) return; // 玩家不在线
-
-                int uid = userCache.GetIdByClient(client);
-
-                if (!fightCache.IsUserHaveFightRoom(uid)) return; // 玩家没有战斗房间
-
-                FightRoom room = fightCache.GetFightRoomByUid(uid);
-
                 // 是否抢地主 这里抢到直接给 后期优化
                 if (isGrabe)
                 {
@@ -90,19 +103,11 @@ namespace Card_Online_Game_Server.Logic
         }
 
         // 出牌处理
-        private void Deal(ClientPeer client, DealDto dealDto)
+        private void Deal(ClientPeer client, DealDto dealDto, int uid, FightRoom room)
         {
             SingleExecute.Instance.Execute(() =>
             {
-                if (!userCache.IsOnline(client)) return; // 玩家不在线
-
-                int uid = userCache.GetIdByClient(client);
-
-                if (!fightCache.IsUserHaveFightRoom(uid)) return; // 玩家没有战斗房间
-
-                FightRoom room = fightCache.GetFightRoomByUid(uid);
-
-                if (room.RunAwayLists.Contains(uid)) Turn(room); // 玩家逃跑 转换出牌
+                if (room.LeavePlayerLists.Contains(uid)) Turn(room); // 玩家逃跑 转换出牌
 
                 var canDeal = room.JudgeCanDeal(dealDto.Length, dealDto.Type, dealDto.Weight, dealDto.Uid, dealDto.SelectCardList);
 
@@ -117,11 +122,42 @@ namespace Card_Online_Game_Server.Logic
                     Borcast(room, OpCode.Fight, FightCode.Deal_Bro, dealDto, client); // 出牌成功 其他人响应
 
                     // 判断玩家手牌
-                    if (room.GetPlayerDto(uid).Cards.Count == 0)
-                    {
-                        // 游戏结束
-                    }
+                    if (room.GetPlayerDto(uid).Cards.Count == 0) GameOver(uid, room); // 游戏结束
                     else Turn(room); // 转换出牌
+                }
+            });
+        }
+
+        // 不出的处理
+
+        private void Pass(ClientPeer client, int uid, FightRoom room)
+        {
+            SingleExecute.Instance.Execute(() =>
+            {
+                if (room.FightRound.LastUid == uid)
+                {
+                    client.Send(OpCode.Fight, FightCode.Pass_Sres, -1); // 当前玩家为最大出牌者 不可以不出
+                    return;
+                }
+
+                client.Send(OpCode.Fight, FightCode.Pass_Sres, 0); // 可以不出
+                Turn(room);
+            });
+        }
+
+        // 离开处理
+        private void Leave(int uid, FightRoom room)
+        {
+            SingleExecute.Instance.Execute(() =>
+            {
+                room.LeavePlayerLists.Add(uid);
+                Borcast(room, OpCode.Fight, FightCode.Leave_Bro, uid);
+
+                if (room.LeavePlayerLists.Count == 3) // 所有人走了
+                {
+                    foreach (var leaveId in room.LeavePlayerLists) Update(leaveId, room, OverIdentity.Leaver); // 所有逃跑者更新
+
+                    fightCache.ClearRoom(room);
                 }
             });
         }
@@ -129,34 +165,25 @@ namespace Card_Online_Game_Server.Logic
         // 游戏结束
         private void GameOver(int winnerId, FightRoom room)
         {
-            List<UserModel> formarList = new List<UserModel>();
-            UserModel Landowner = null;
+            var winIdentity = room.GetPlayerIndentity(winnerId); // 获取获胜身份
+            var winLists = room.GetSameIdentityUids(winIdentity); // 获胜人id列表
+            var failLists = room.GetDifferentIdentityUids(winIdentity); // 失败者id列表
 
-            // 获取地主和农民的数据模型
-            for (int i = 0; i < room.PlayerList.Count; i++)
-            {
-                if (room.GetLandownerUid() == room.PlayerList[i].Id)
-                {
-                    Landowner = userCache.GetUserModelByUid(room.PlayerList[i].Id);
-                }
-                else
-                {
-                    var model = userCache.GetUserModelByUid(room.PlayerList[i].Id);
-                    formarList.Add(model);
-                }
-            }
+            // 获胜者
+            foreach (var winId in winLists) Update(winId, room, OverIdentity.Winner);
 
-            if (room.GetLandownerUid() == winnerId) // 地主获胜
-            {
-                // 地主胜场+1 加豆子
-                var userModel = userCache.GetUserModelByUid(winnerId);
-                userModel.BeanCount += 3000;
+            // 失败者
+            foreach (var failId in failLists) Update(failId, room, OverIdentity.Loser);
 
-                // 农民负场+1 减豆子
-            }
-            else // 农民获胜
-            {
-            }
+            //逃跑者
+            foreach (var leaveId in room.LeavePlayerLists) Update(leaveId, room, OverIdentity.Leaver);
+
+            // 客户端发送消息
+            OverDto overDto = new OverDto(room.Multiple * 50, winLists, failLists, room.LeavePlayerLists);
+            Borcast(room, OpCode.Fight, FightCode.Over_Bro, overDto);
+
+            // 清除房间
+            fightCache.ClearRoom(room);
         }
 
         // 转换出牌
@@ -164,7 +191,7 @@ namespace Card_Online_Game_Server.Logic
         {
             int nextUid = room.Turn();
 
-            if (room.JudgeIsRunAway(nextUid)) Turn(room); // 下一个玩家掉线则跳过
+            if (room.JudgeIsLeave(nextUid)) Turn(room); // 下一个玩家掉线则跳过
             else
             {
                 ClientPeer nextClient = userCache.GetClientById(nextUid);  // 下一个玩家的客户端
@@ -184,6 +211,34 @@ namespace Card_Online_Game_Server.Logic
                 if (currentClient == client) continue;
                 client.Send(packet);
             }
+        }
+
+        public void Update(int uid, FightRoom room, int overIdentity) // 更新角色方法
+        {
+            UserModel userModel = userCache.GetUserModelByUid(uid);
+
+            switch (overIdentity)
+            {
+                case OverIdentity.Winner:
+                    userModel.BeanCount += room.Multiple * 50;
+
+                    break;
+
+                case OverIdentity.Loser:
+                    userModel.BeanCount -= room.Multiple * 50;
+
+                    break;
+
+                case OverIdentity.Leaver:
+                    userModel.BeanCount -= room.Multiple * 100;
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            userCache.UpdateUserModel(userModel);
         }
     }
 }

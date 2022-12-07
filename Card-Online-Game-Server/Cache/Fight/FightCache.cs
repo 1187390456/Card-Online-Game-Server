@@ -49,7 +49,7 @@ namespace Card_Online_Game_Server.Cache
 
         public void ClearRoom(FightRoom room) // 清除房间
         {
-            // 接触映射 清除数据
+            // 解除映射 清除数据
             currentFightRoom.Remove(room.Id); // 清除该战斗房间
             foreach (var player in room.PlayerList)
             {
@@ -57,7 +57,7 @@ namespace Card_Online_Game_Server.Cache
             }
             // 初始化房间数据 入队
             room.PlayerList.Clear();
-            room.RunAwayLists.Clear();
+            room.LeavePlayerLists.Clear();
             room.TableCardList.Clear();
             room.CardLibrary.Init();
             room.FightRound.Init();

@@ -24,6 +24,8 @@ namespace Card_Online_Game_Server.Cache
             accUidDic.Add(accountId, userModel.Id);
         }
 
+        public void UpdateUserModel(UserModel userModel) => userModelDic[userModel.Id] = userModel; // 更新角色信息
+
         public bool IsExit(int accountId) => accUidDic.ContainsKey(accountId); // 当前账号是否有角色
 
         public UserModel GetUserModelByAccountId(int accountId) => userModelDic[accUidDic[accountId]]; // 根据账号id获取角色模型

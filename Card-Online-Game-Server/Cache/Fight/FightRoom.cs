@@ -20,7 +20,7 @@ namespace Card_Online_Game_Server.Cache
 
         public List<PlayerDto> PlayerList; // 玩家列表
 
-        public List<int> RunAwayLists; // 逃跑玩家列表
+        public List<int> LeavePlayerLists; // 逃跑玩家列表
 
         public CardLibrary CardLibrary; // 牌库
 
@@ -32,7 +32,7 @@ namespace Card_Online_Game_Server.Cache
             Multiple = 15;
             CardLibrary = new CardLibrary();
             FightRound = new FightRound();
-            RunAwayLists = new List<int>();
+            LeavePlayerLists = new List<int>();
             PlayerList = new List<PlayerDto>();
             TableCardList = new List<CardDto>();
 
@@ -91,7 +91,7 @@ namespace Card_Online_Game_Server.Cache
         }
 
         // 判断是否逃跑
-        public bool JudgeIsRunAway(int uid) => RunAwayLists.Contains(uid);
+        public bool JudgeIsLeave(int uid) => LeavePlayerLists.Contains(uid);
 
         // 移除玩家手牌
         public void RemoveCards(int userId, List<CardDto> removeCardList)
@@ -139,7 +139,25 @@ namespace Card_Online_Game_Server.Cache
 
         public int GetPlayerIndentity(int userId) => GetPlayerDto(userId).Identify; // 获取玩家身份
 
-        public int GetLandownerUid() => PlayerList.Find(item => item.Identify == FightIdentity.Landowner).Id; // 获取地主玩家id
+        public List<int> GetSameIdentityUids(int indentity) // 获取相同身份的uid列表
+        {
+            List<int> result = new List<int>();
+            foreach (var item in PlayerList)
+            {
+                if (item.Identify == indentity) result.Add(item.Id);
+            }
+            return result;
+        }
+
+        public List<int> GetDifferentIdentityUids(int indentity) // 获取不身份的uid列表
+        {
+            List<int> result = new List<int>();
+            foreach (var item in PlayerList)
+            {
+                if (item.Identify != indentity) result.Add(item.Id);
+            }
+            return result;
+        }
 
         public int GetStartUid() // 返回随机玩家id 叫地主
         {
