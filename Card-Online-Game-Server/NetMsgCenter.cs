@@ -28,11 +28,11 @@ namespace Card_Online_Game_Server
         public void OnDisconnect(ClientPeer client)
         {
             // 注意顺序 先退聊天 再退房间 角色 账号
+            fight.OnDisconnect(client);
             chat.OnDisconnect(client);
             match.OnDisconnect(client);
             user.OnDisconnect(client);
             account.OnDisconnect(client);
-            fight.OnDisconnect(client);
         }
 
         public void OnReceive(ClientPeer client, SocketMsg msg)

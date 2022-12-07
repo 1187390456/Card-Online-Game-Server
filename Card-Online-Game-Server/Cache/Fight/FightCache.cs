@@ -23,25 +23,25 @@ namespace Card_Online_Game_Server.Cache
 
         public FightRoom CrateRoom(List<int> uidList) // 创建房间
         {
+
             FightRoom room = null;
 
             // 查找是否有可利用的房间
             if (roomQueue.Count > 0)
             {
                 room = roomQueue.Dequeue();
+                room.Init(uidList);
             }
             else
             {
                 room = new FightRoom(id.Add_Get(), uidList);
             }
-
             // 绑定映射 存储数据
 
             foreach (int uid in uidList) // 遍历获取玩家id
             {
                 uidRoomIdDic.Add(uid, room.Id); // 玩家与战斗房间绑定
             }
-
             currentFightRoom.Add(room.Id, room); // 绑定战斗房间
 
             return room;

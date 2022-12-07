@@ -33,34 +33,21 @@ namespace Card_Online_Game_Server.Cache
         // 创建普通牌  这里bug了
         private void CreateNormalCard()
         {
+
             CardQueue = new Queue<CardDto>();
 
             for (int color = CardColor.Clue; color <= CardColor.Square; color++) // 遍历花色
             {
-                for (int weight = CardWeight.Three; color <= CardWeight.Two; weight++) // 遍历权重
+                for (int weight = CardWeight.Three; weight <= CardWeight.Two; weight++) // 遍历权重
                 {
-                    CardDto card = new CardDto
-                    {
-                        Color = color,
-                        Weight = weight,
-                        Name = $"{color}{weight}"
-                    }; // 生成卡牌
+                    var name = color.ToString() + "-" + weight.ToString();
+                    CardDto card = new CardDto(name, color, weight);// 生成卡牌
                     CardQueue.Enqueue(card); // 入队 52张
                 }
             }
 
-            CardDto Sjoker = new CardDto // 小王
-            {
-                Color = CardColor.None,
-                Weight = CardWeight.SJoker,
-                Name = $"{CardColor.None}{CardWeight.SJoker}"
-            };
-            CardDto LJoker = new CardDto // 大王
-            {
-                Color = CardColor.None,
-                Weight = CardWeight.LJoker,
-                Name = $"{CardColor.None}{CardWeight.LJoker}"
-            };
+            CardDto Sjoker = new CardDto("SJoker", CardColor.None, CardWeight.SJoker);
+            CardDto LJoker = new CardDto("LJoker", CardColor.None, CardWeight.LJoker);
 
             CardQueue.Enqueue(Sjoker);
             CardQueue.Enqueue(LJoker);

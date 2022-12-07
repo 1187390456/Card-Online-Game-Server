@@ -30,13 +30,16 @@ namespace Card_Online_Game_Server.Cache
         {
             Id = id;
             Multiple = 15;
+            PlayerList = new List<PlayerDto>();
+            LeavePlayerLists = new List<int>();
+            TableCardList = new List<CardDto>();
             CardLibrary = new CardLibrary();
             FightRound = new FightRound();
-            LeavePlayerLists = new List<int>();
-            PlayerList = new List<PlayerDto>();
-            TableCardList = new List<CardDto>();
-
-            // 遍历玩家列表 转换为玩家信息存储
+            Init(uidList);   // 遍历玩家列表 转换为玩家信息存储
+        }
+        // 初始化
+        public void Init(List<int> uidList)
+        {
             foreach (int uid in uidList)
             {
                 PlayerDto player = new PlayerDto(uid);
@@ -159,11 +162,11 @@ namespace Card_Online_Game_Server.Cache
             return result;
         }
 
-        public int GetStartUid() // 返回随机玩家id 叫地主
+        public int GetStartUid()// 返回玩家id 叫地主 后期修改随机
         {
-            Random rand = new Random();
-            return PlayerList[rand.Next(0, 3)].Id;
+            return PlayerList[0].Id;
         }
+
 
         public void SordAllCard(bool order = true) // 给所有牌排序
         {

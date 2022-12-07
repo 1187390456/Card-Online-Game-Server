@@ -15,5 +15,16 @@ namespace Protocol.Dto
         public string Name; // 名称
         public int Color; // 颜色
         public int Weight; // 权重
+        public CardDto()
+        {
+
+        }
+        public CardDto(string name, int color, int weight)
+        {
+            Name = name;
+            Color = color;
+            Weight = weight;
+        }
     }
+
 }
