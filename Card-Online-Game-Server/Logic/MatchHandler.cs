@@ -164,7 +164,6 @@ namespace Card_Online_Game_Server.Logic
                 if (matchRoom.IsAllReady()) // 所有玩家准备
                 {
                     StartFightAction(matchRoom.GetAllUserId()); // 通知服务器开始战斗了
-
                     matchRoom.Borcast(OpCode.Match, MatchCode.Start_Bro, null); //通知房间内其他玩家开始战斗了
                     matchCache.ClearRoom(matchRoom); // 清除房间
                 }

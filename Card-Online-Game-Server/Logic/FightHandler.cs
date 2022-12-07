@@ -64,6 +64,8 @@ namespace Card_Online_Game_Server.Logic
         {
             SingleExecute.Instance.Execute(() =>
             {
+                Console.WriteLine("开始战斗了");
+
                 FightRoom room = fightCache.CrateRoom(uidList);
 
                 // 开始发牌 玩家手牌排序
@@ -72,6 +74,8 @@ namespace Card_Online_Game_Server.Logic
 
                 foreach (int uid in uidList) // 向每个玩家客户端发送玩家卡牌信息
                 {
+                    Console.WriteLine(uid);
+
                     var client = userCache.GetClientById(uid);
                     var cardList = room.GetUserCards(uid);
                     client.Send(OpCode.Fight, FightCode.Get_Card_Sres, cardList);

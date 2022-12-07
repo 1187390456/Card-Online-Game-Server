@@ -39,7 +39,7 @@ namespace Card_Online_Game_Server.Cache
         {
             List<int> uidList = new List<int>();
 
-            foreach (var item in UserClientDic.Keys)
+            foreach (var item in UserReadyList)
             {
                 uidList.Add(item.Id);
             }

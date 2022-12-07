@@ -30,7 +30,7 @@ namespace Card_Online_Game_Server.Cache
 
         public CardDto Deal() => CardQueue.Dequeue(); // 发牌
 
-        // 创建普通牌
+        // 创建普通牌  这里bug了
         private void CreateNormalCard()
         {
             CardQueue = new Queue<CardDto>();
