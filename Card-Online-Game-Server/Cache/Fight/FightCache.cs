@@ -23,7 +23,6 @@ namespace Card_Online_Game_Server.Cache
 
         public FightRoom CrateRoom(List<int> uidList) // 创建房间
         {
-
             FightRoom room = null;
 
             // 查找是否有可利用的房间
@@ -51,10 +50,6 @@ namespace Card_Online_Game_Server.Cache
         {
             // 解除映射 清除数据
             currentFightRoom.Remove(room.Id); // 清除该战斗房间
-            foreach (var player in room.PlayerList)
-            {
-                uidRoomIdDic.Remove(player.Id);
-            }
             // 初始化房间数据 入队
             room.PlayerList.Clear();
             room.LeavePlayerLists.Clear();
@@ -65,6 +60,8 @@ namespace Card_Online_Game_Server.Cache
 
             roomQueue.Enqueue(room);
         }
+
+        public bool RemoveUidRoom(int userId) => uidRoomIdDic.Remove(userId); // 移除玩家房间映射 离开就调用
 
         public bool IsFightRoomAlive(int roomId) => currentFightRoom.ContainsKey(roomId); // 是否存在该战斗房间
 

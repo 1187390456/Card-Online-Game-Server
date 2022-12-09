@@ -37,6 +37,7 @@ namespace Card_Online_Game_Server.Cache
             FightRound = new FightRound();
             Init(uidList);   // 遍历玩家列表 转换为玩家信息存储
         }
+
         // 初始化
         public void Init(List<int> uidList)
         {
@@ -110,6 +111,9 @@ namespace Card_Online_Game_Server.Cache
             }
         }
 
+        // 移除指定玩家
+        public void RemocePlayerById(int userId) => PlayerList.Remove(PlayerList.Find(item => item.Id == userId));
+
         // 开始发牌
         public void StatDeal()
         {
@@ -166,7 +170,6 @@ namespace Card_Online_Game_Server.Cache
         {
             return PlayerList[0].Id;
         }
-
 
         public void SordAllCard(bool order = true) // 给所有牌排序
         {

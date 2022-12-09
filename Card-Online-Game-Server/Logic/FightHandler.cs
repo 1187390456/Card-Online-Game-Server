@@ -64,7 +64,6 @@ namespace Card_Online_Game_Server.Logic
         {
             SingleExecute.Instance.Execute(() =>
             {
-
                 FightRoom room = fightCache.CrateRoom(uidList);
 
                 // 开始发牌 玩家手牌排序
@@ -152,7 +151,11 @@ namespace Card_Online_Game_Server.Logic
         {
             SingleExecute.Instance.Execute(() =>
             {
-                room.LeavePlayerLists.Add(uid);
+                room.LeavePlayerLists.Add(uid); // 添加离开列表
+
+                room.RemocePlayerById(uid); // 移除房间玩家
+                fightCache.RemoveUidRoom(uid); // 移除玩家房间绑定
+
                 Borcast(room, OpCode.Fight, FightCode.Leave_Bro, uid);
 
                 if (room.LeavePlayerLists.Count == 3) // 所有人走了
