@@ -47,11 +47,16 @@ namespace Card_Online_Game_Server.Logic
                     break;
 
                 case FightCode.Deal_Cres:
+
                     Deal(client, (DealDto)value, uid, room);
                     break;
 
                 case FightCode.Pass_Cres:
                     Pass(client, uid, room);
+                    break;
+
+                case FightCode.Leave_Cres:
+                    Leave(uid, room);
                     break;
 
                 default:

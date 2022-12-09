@@ -30,10 +30,11 @@ namespace Protocol.Code
 
         public const int Turn_Deal_Bro = 8; // 出牌转换广播
 
-        public const int Leave_Bro = 9; // 有人离开
+        public const int Leave_Cres = 9; // 离开
+        public const int Leave_Bro = 10; // 有人离开 广播
 
-        public const int Over_Bro = 10; //游戏结束
+        public const int Over_Bro = 11; //游戏结束
 
-        public const int Get_Card_Sres = 11; // 服务器卡牌响应
+        public const int Get_Card_Sres = 12; // 服务器卡牌响应
     }
 }
