@@ -26,6 +26,8 @@ namespace Card_Online_Game_Server.Cache
 
         public FightRound FightRound; // 战斗回合
 
+        public int GrabTurnCount; // 抢地主 轮换次数
+
         public FightRoom(int id, List<int> uidList)
         {
             Id = id;
@@ -58,6 +60,7 @@ namespace Card_Online_Game_Server.Cache
             FightRound.Turn(nextUid);
             return nextUid;
         }
+        public bool JudgeCanTurnGrab() => GrabTurnCount < 2; // 是否可以抢地主轮换
 
         // 判断是否可以管牌 可以则处理
         public bool JudgeCanDeal(int length, int type, int weight, int userId, List<CardDto> cardList)

@@ -55,6 +55,9 @@ namespace Card_Online_Game_Server
                     chat.OnReceive(client, msg.SubCode, msg.Value);
                     break;
 
+                case OpCode.Fight:
+                    fight.OnReceive(client, msg.SubCode, msg.Value);
+                    break;
                 default:
                     break;
             }

@@ -57,6 +57,7 @@ namespace Card_Online_Game_Server.Cache
             room.CardLibrary.Init();
             room.FightRound.Init();
             room.Multiple = 15;
+            room.GrabTurnCount = 0;
 
             roomQueue.Enqueue(room);
         }

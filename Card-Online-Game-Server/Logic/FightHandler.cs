@@ -7,6 +7,7 @@ using Protocol.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,10 +82,13 @@ namespace Card_Online_Game_Server.Logic
                     var cardList = room.GetUserCards(uid);
                     client.Send(OpCode.Fight, FightCode.Get_Card_Sres, cardList);
                 }
+
                 var startID = room.GetStartUid();
 
-                // 开始抢地主
-                Borcast(room, OpCode.Fight, FightCode.Grab_Landowner_Bro, startID);
+                int nextId = room.GetNextUid(startID);
+                TurnDto turnDto = new TurnDto(startID, nextId, true);
+
+                Borcast(room, OpCode.Fight, FightCode.Turn_Grad_Bro, turnDto); // 广播轮换第一次
             });
         }
 
@@ -103,7 +107,21 @@ namespace Card_Online_Game_Server.Logic
                 else
                 {
                     int nextId = room.GetNextUid(uid);
-                    Borcast(room, OpCode.Fight, FightCode.Turn_Grad_Bro, nextId); // 不抢地主 转换 发送下一个玩家id
+                    TurnDto turnDto = new TurnDto(uid, nextId, false);
+
+                    if (room.JudgeCanTurnGrab()) //两次轮换后直接强制
+                    {
+                        Borcast(room, OpCode.Fight, FightCode.Turn_Grad_Bro, turnDto); // 不抢地主 转换 发送下一个玩家id 
+                        room.GrabTurnCount++;
+                    }
+                    else
+                    {
+                        // 直接抢强制抢成功  下一位
+
+                        room.SetLandowner(nextId);
+                        GrabDto grabDto = new GrabDto(nextId, room.TableCardList);
+                        Borcast(room, OpCode.Fight, FightCode.Grab_Landowner_Bro, grabDto); // 广播抢地主消息 成功结果
+                    }
                 }
             });
         }
