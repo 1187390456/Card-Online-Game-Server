@@ -100,9 +100,12 @@ namespace Card_Online_Game_Server.Logic
                 // 是否抢地主 这里抢到直接给 后期优化
                 if (isGrabe)
                 {
-                    room.SetLandowner(uid);
-                    GrabDto grabDto = new GrabDto(uid, room.TableCardList);
+                    var playerCardList = room.SetLandowner(uid);
+                    GrabDto grabDto = new GrabDto(uid, room.TableCardList, playerCardList);
                     Borcast(room, OpCode.Fight, FightCode.Grab_Landowner_Bro, grabDto); // 广播抢地主消息 成功结果
+
+                    //  出牌
+                    Borcast(room, OpCode.Fight, FightCode.Turn_Deal_Bro, uid);
                 }
                 else
                 {
@@ -119,8 +122,12 @@ namespace Card_Online_Game_Server.Logic
                         // 直接抢强制抢成功  下一位
 
                         room.SetLandowner(nextId);
-                        GrabDto grabDto = new GrabDto(nextId, room.TableCardList);
+                        var playerCardList = room.SetLandowner(uid);
+                        GrabDto grabDto = new GrabDto(nextId, room.TableCardList, playerCardList);
                         Borcast(room, OpCode.Fight, FightCode.Grab_Landowner_Bro, grabDto); // 广播抢地主消息 成功结果
+
+                        //  出牌
+                        Borcast(room, OpCode.Fight, FightCode.Turn_Deal_Bro, nextId); // 出牌
                     }
                 }
             });
@@ -220,11 +227,7 @@ namespace Card_Online_Game_Server.Logic
             int nextUid = room.Turn();
 
             if (room.JudgeIsLeave(nextUid)) Turn(room); // 下一个玩家掉线则跳过
-            else
-            {
-                ClientPeer nextClient = userCache.GetClientById(nextUid);  // 下一个玩家的客户端
-                nextClient.Send(OpCode.Fight, FightCode.Turn_Deal_Bro, nextUid); // 下一个玩家出牌 广播
-            }
+            else Borcast(room, OpCode.Fight, FightCode.Turn_Deal_Bro, nextUid);  // 下一个玩家出牌 广播
         }
 
         public void Borcast(FightRoom room, int opCode, int subCode, object value, ClientPeer currentClient = null)     // 广播

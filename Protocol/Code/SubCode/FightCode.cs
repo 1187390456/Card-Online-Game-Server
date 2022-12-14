@@ -27,7 +27,6 @@ namespace Protocol.Code
 
         public const int Pass_Cres = 6; // 不出
         public const int Pass_Sres = 7; // 不出响应
-
         public const int Turn_Deal_Bro = 8; // 出牌转换广播
 
         public const int Leave_Cres = 9; // 离开

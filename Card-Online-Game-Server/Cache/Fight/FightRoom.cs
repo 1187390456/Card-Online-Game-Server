@@ -137,12 +137,14 @@ namespace Card_Online_Game_Server.Cache
         }
 
         // 设置地主 分发底牌 开始回合
-        public void SetLandowner(int userId)
+        public List<CardDto> SetLandowner(int userId)
         {
             var landownerPlayer = PlayerList.Find(item => item.Id == userId);
             landownerPlayer.Identify = FightIdentity.Landowner;
             landownerPlayer.AddCard(TableCardList);
+            SordAllCard();
             FightRound.Start(userId);
+            return landownerPlayer.Cards;
         }
 
         public PlayerDto GetPlayerDto(int userId) => PlayerList.Find(item => item.Id == userId);  // 获取玩家数据模型
