@@ -20,7 +20,6 @@ namespace Protocol.Code
         // 出牌
 
         public const int Deal_Cres = 3; // 出牌
-        public const int Deal_Sres = 4; // 出牌响应
         public const int Deal_Bro = 5; // 出牌结果广播
 
         // 不出

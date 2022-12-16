@@ -142,15 +142,15 @@ namespace Card_Online_Game_Server.Logic
 
                 var canDeal = room.JudgeCanDeal(dealDto.Length, dealDto.Type, dealDto.Weight, dealDto.Uid, dealDto.SelectCardList);
 
-                if (!canDeal)
+                var cardType = CardType.GetCardType(dealDto.SelectCardList);
+
+                if (!canDeal || cardType == CardType.None)
                 {
-                    client.Send(OpCode.Fight, FightCode.Deal_Sres, -1); // 不能出牌 自身响应
+                    client.Send(OpCode.Fight, FightCode.Deal_Bro, null); // 不能出牌 自身响应
                 }
                 else
                 {
-                    client.Send(OpCode.Fight, FightCode.Deal_Sres, 0); // 出牌成功 自身响应
-
-                    Borcast(room, OpCode.Fight, FightCode.Deal_Bro, dealDto, client); // 出牌成功 其他人响应
+                    Borcast(room, OpCode.Fight, FightCode.Deal_Bro, dealDto); // 出牌成功 响应
 
                     // 判断玩家手牌
                     if (room.GetPlayerDto(uid).Cards.Count == 0) GameOver(uid, room); // 游戏结束

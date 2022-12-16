@@ -87,6 +87,7 @@ namespace Card_Online_Game_Server.Cache
                 Multiple *= 8;
                 canDeal = true; // 王炸
             }
+            else if (userId == FightRound.LastUid) canDeal = true;
 
             if (canDeal)
             {
