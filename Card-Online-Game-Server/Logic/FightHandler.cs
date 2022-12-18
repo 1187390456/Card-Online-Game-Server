@@ -167,11 +167,12 @@ namespace Card_Online_Game_Server.Logic
             {
                 if (room.FightRound.LastUid == uid)
                 {
-                    client.Send(OpCode.Fight, FightCode.Pass_Sres, -1); // 当前玩家为最大出牌者 不可以不出
+                    client.Send(OpCode.Fight, FightCode.Pass_Bro, null); // 当前玩家为最大出牌者 不可以不出
                     return;
                 }
 
-                client.Send(OpCode.Fight, FightCode.Pass_Sres, 0); // 可以不出
+                Borcast(room, OpCode.Fight, FightCode.Pass_Bro, uid); // 可以不出 广播响应
+
                 Turn(room);
             });
         }
@@ -227,7 +228,15 @@ namespace Card_Online_Game_Server.Logic
             int nextUid = room.Turn();
 
             if (room.JudgeIsLeave(nextUid)) Turn(room); // 下一个玩家掉线则跳过
-            else Borcast(room, OpCode.Fight, FightCode.Turn_Deal_Bro, nextUid);  // 下一个玩家出牌 广播
+            else
+            {
+                Borcast(room, OpCode.Fight, FightCode.Turn_Deal_Bro, nextUid);  // 下一个玩家出牌 广播
+
+                if (nextUid == room.FightRound.LastUid) // 下一个出牌是最大出牌者 即其他两人不出
+                {
+                    Borcast(room, OpCode.Fight, FightCode.Pass_Round_Bro, nextUid);  // 通知轮空一回合 无人管牌
+                }
+            }
         }
 
         public void Borcast(FightRoom room, int opCode, int subCode, object value, ClientPeer currentClient = null)     // 广播

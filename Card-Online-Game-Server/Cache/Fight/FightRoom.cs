@@ -70,7 +70,7 @@ namespace Card_Online_Game_Server.Cache
             {
                 if (type == CardType.Straight || type == CardType.Double_Straight) // 顺子和连对 加判断长度
                 {
-                    if (length >= FightRound.LastCardLength)
+                    if (length == FightRound.LastCardLength)
                     {
                         canDeal = true;
                     }
@@ -105,14 +105,17 @@ namespace Card_Online_Game_Server.Cache
         public void RemoveCards(int userId, List<CardDto> removeCardList)
         {
             var currentCardList = GetUserCards(userId);
+            List<CardDto> list = new List<CardDto>();
 
             for (int i = currentCardList.Count - 1; i >= 0; i--)
             {
                 foreach (var card in removeCardList)
                 {
-                    if (currentCardList[i].Name == card.Name) currentCardList.RemoveAt(i);
+                    if (currentCardList[i].Name == card.Name) list.Add(card); break;
                 }
             }
+
+            foreach (var card in list) currentCardList.Remove(card);
         }
 
         // 移除指定玩家
