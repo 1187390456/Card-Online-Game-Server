@@ -50,6 +50,12 @@ namespace Card_Online_Game_Server.Cache
         {
             // 解除映射 清除数据
             currentFightRoom.Remove(room.Id); // 清除该战斗房间
+
+            foreach (var player in room.PlayerList) // 遍历获取玩家id
+            {
+                uidRoomIdDic.Remove(player.Id); // 玩家与战斗房间绑定
+            }
+
             // 初始化房间数据 入队
             room.PlayerList.Clear();
             room.LeavePlayerLists.Clear();

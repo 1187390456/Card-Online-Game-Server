@@ -60,6 +60,7 @@ namespace Card_Online_Game_Server.Cache
             FightRound.Turn(nextUid);
             return nextUid;
         }
+
         public bool JudgeCanTurnGrab() => GrabTurnCount < 2; // 是否可以抢地主轮换
 
         // 判断是否可以管牌 可以则处理
@@ -107,11 +108,15 @@ namespace Card_Online_Game_Server.Cache
             var currentCardList = GetUserCards(userId);
             List<CardDto> list = new List<CardDto>();
 
-            for (int i = currentCardList.Count - 1; i >= 0; i--)
+            foreach (var card in removeCardList)
             {
-                foreach (var card in removeCardList)
+                for (var i = 0; i < currentCardList.Count; i++)
                 {
-                    if (currentCardList[i].Name == card.Name) list.Add(card); break;
+                    if (currentCardList[i].Color == card.Color && currentCardList[i].Weight == card.Weight)
+                    {
+                        list.Add(currentCardList[i]);
+                        break;
+                    }
                 }
             }
 
@@ -207,7 +212,7 @@ namespace Card_Online_Game_Server.Cache
             {
                 if (PlayerList[i].Id == currentUid)
                 {
-                    if (i == 2) return PlayerList[0].Id;
+                    if (i == PlayerList.Count - 1) return PlayerList[0].Id;
                     else return PlayerList[i + 1].Id;
                 }
             }

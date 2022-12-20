@@ -114,7 +114,7 @@ namespace Card_Online_Game_Server.Logic
 
                     if (room.JudgeCanTurnGrab()) //两次轮换后直接强制
                     {
-                        Borcast(room, OpCode.Fight, FightCode.Turn_Grad_Bro, turnDto); // 不抢地主 转换 发送下一个玩家id 
+                        Borcast(room, OpCode.Fight, FightCode.Turn_Grad_Bro, turnDto); // 不抢地主 转换 发送下一个玩家id
                         room.GrabTurnCount++;
                     }
                     else
