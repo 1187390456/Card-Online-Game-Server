@@ -20,14 +20,13 @@ namespace Protocol.Code
         // 出牌
 
         public const int Deal_Cres = 3; // 出牌
-        public const int Deal_Sres = 4; // 出牌响应
         public const int Deal_Bro = 5; // 出牌结果广播
 
         // 不出
 
         public const int Pass_Cres = 6; // 不出
-        public const int Pass_Sres = 7; // 不出响应
-
+        public const int Pass_Bro = 7; // 不出结果广播
+        public const int Pass_Round_Bro = 13; // 两人不出 轮空一回合
         public const int Turn_Deal_Bro = 8; // 出牌转换广播
 
         public const int Leave_Cres = 9; // 离开

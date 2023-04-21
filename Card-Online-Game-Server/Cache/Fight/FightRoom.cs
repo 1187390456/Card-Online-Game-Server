@@ -26,6 +26,8 @@ namespace Card_Online_Game_Server.Cache
 
         public FightRound FightRound; // 战斗回合
 
+        public int GrabTurnCount; // 抢地主 轮换次数
+
         public FightRoom(int id, List<int> uidList)
         {
             Id = id;
@@ -59,6 +61,8 @@ namespace Card_Online_Game_Server.Cache
             return nextUid;
         }
 
+        public bool JudgeCanTurnGrab() => GrabTurnCount < 2; // 是否可以抢地主轮换
+
         // 判断是否可以管牌 可以则处理
         public bool JudgeCanDeal(int length, int type, int weight, int userId, List<CardDto> cardList)
         {
@@ -67,7 +71,7 @@ namespace Card_Online_Game_Server.Cache
             {
                 if (type == CardType.Straight || type == CardType.Double_Straight) // 顺子和连对 加判断长度
                 {
-                    if (length >= FightRound.LastCardLength)
+                    if (length == FightRound.LastCardLength)
                     {
                         canDeal = true;
                     }
@@ -84,6 +88,7 @@ namespace Card_Online_Game_Server.Cache
                 Multiple *= 8;
                 canDeal = true; // 王炸
             }
+            else if (userId == FightRound.LastUid) canDeal = true;
 
             if (canDeal)
             {
@@ -101,14 +106,21 @@ namespace Card_Online_Game_Server.Cache
         public void RemoveCards(int userId, List<CardDto> removeCardList)
         {
             var currentCardList = GetUserCards(userId);
+            List<CardDto> list = new List<CardDto>();
 
-            for (int i = currentCardList.Count - 1; i >= 0; i--)
+            foreach (var card in removeCardList)
             {
-                foreach (var card in removeCardList)
+                for (var i = 0; i < currentCardList.Count; i++)
                 {
-                    if (currentCardList[i].Name == card.Name) currentCardList.RemoveAt(i);
+                    if (currentCardList[i].Color == card.Color && currentCardList[i].Weight == card.Weight)
+                    {
+                        list.Add(currentCardList[i]);
+                        break;
+                    }
                 }
             }
+
+            foreach (var card in list) currentCardList.Remove(card);
         }
 
         // 移除指定玩家
@@ -134,12 +146,14 @@ namespace Card_Online_Game_Server.Cache
         }
 
         // 设置地主 分发底牌 开始回合
-        public void SetLandowner(int userId)
+        public List<CardDto> SetLandowner(int userId)
         {
             var landownerPlayer = PlayerList.Find(item => item.Id == userId);
             landownerPlayer.Identify = FightIdentity.Landowner;
             landownerPlayer.AddCard(TableCardList);
+            SordAllCard();
             FightRound.Start(userId);
+            return landownerPlayer.Cards;
         }
 
         public PlayerDto GetPlayerDto(int userId) => PlayerList.Find(item => item.Id == userId);  // 获取玩家数据模型
@@ -198,7 +212,7 @@ namespace Card_Online_Game_Server.Cache
             {
                 if (PlayerList[i].Id == currentUid)
                 {
-                    if (i == 2) return PlayerList[0].Id;
+                    if (i == PlayerList.Count - 1) return PlayerList[0].Id;
                     else return PlayerList[i + 1].Id;
                 }
             }

@@ -15,6 +15,7 @@ namespace Card_Online_Game_Server.Logic
     {
         private UserCache userCache = Caches.UserCache;
         private MatchCache matchCache = Caches.MatchCache;
+        private FightCache fightCache = Caches.FightCache;
 
         public void OnDisconnect(ClientPeer client)
         {
@@ -62,8 +63,10 @@ namespace Card_Online_Game_Server.Logic
                     var room = matchCache.GetUserRoom(userModel);
                     room.Borcast(OpCode.Chat, ChatCode.Send_Quick_Bro, chatDto);
                 }
-                else
+                else if (fightCache.IsUserHaveFightRoom(userModel.Id))
                 {
+                    var room = fightCache.GetFightRoomByUid(userModel.Id);
+                    Borcast(room, OpCode.Chat, ChatCode.Send_Quick_Bro, chatDto);
                 }
             });
         }
@@ -91,8 +94,10 @@ namespace Card_Online_Game_Server.Logic
                     var room = matchCache.GetUserRoom(userModel);
                     room.Borcast(OpCode.Chat, ChatCode.Send_ZiDingYi_Bro, chatDto);
                 }
-                else
+                else if (fightCache.IsUserHaveFightRoom(userModel.Id))
                 {
+                    var room = fightCache.GetFightRoomByUid(userModel.Id);
+                    Borcast(room, OpCode.Chat, ChatCode.Send_ZiDingYi_Bro, chatDto);
                 }
             });
         }
@@ -120,10 +125,28 @@ namespace Card_Online_Game_Server.Logic
                     var room = matchCache.GetUserRoom(userModel);
                     room.Borcast(OpCode.Chat, ChatCode.Send_Emoji_Bro, chatDto);
                 }
-                else
+                else if (fightCache.IsUserHaveFightRoom(userModel.Id))
                 {
+                    var room = fightCache.GetFightRoomByUid(userModel.Id);
+                    Borcast(room, OpCode.Chat, ChatCode.Send_Emoji_Bro, chatDto);
                 }
             });
         }
+
+
+        public void Borcast(FightRoom room, int opCode, int subCode, object value, ClientPeer currentClient = null)     // 战斗房间广播
+        {
+            SocketMsg msg = new SocketMsg(opCode, subCode, value); // 构造发送消息类
+            byte[] data = EncodeTool.EncodeMsg(msg); // 将消息类转成 字节数组
+            byte[] packet = EncodeTool.EncodePacket(data); // 将字节数组 转成指定的 数据包字节数组
+
+            foreach (var player in room.PlayerList)
+            {
+                var client = userCache.GetClientById(player.Id);
+                if (currentClient == client) continue;
+                client.Send(packet);
+            }
+        }
+
     }
 }

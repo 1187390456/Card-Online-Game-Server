@@ -45,7 +45,7 @@ namespace Protocol.Constant
             if (cardType == CardType.Three_One || cardType == CardType.Three_Two)
             {
                 // 找出连续的卡牌
-                for (int i = 0; i < cardList.Count; i++)
+                for (int i = 0; i < cardList.Count - 2; i++)
                 {
                     // 当连续的三个权值相等即找到
                     if (cardList[i].Weight == cardList[i + 1].Weight && cardList[i].Weight == cardList[i + 2].Weight)

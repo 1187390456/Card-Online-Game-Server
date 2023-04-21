@@ -15,15 +15,17 @@ namespace Protocol.Dto
     {
         public int Uid;
         public List<CardDto> TableCardList = new List<CardDto>();
+        public List<CardDto> PlayerCardList = new List<CardDto>();
 
         public GrabDto()
         {
         }
 
-        public GrabDto(int uid, List<CardDto> tableCardList)
+        public GrabDto(int uid, List<CardDto> tableCardList, List<CardDto> playerCardList)
         {
             Uid = uid;
             TableCardList = tableCardList;
+            PlayerCardList = playerCardList;
         }
     }
 }
